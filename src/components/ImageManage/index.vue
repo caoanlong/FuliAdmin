@@ -33,6 +33,8 @@
 				</el-table-column>
 				<el-table-column prop="ImgTit" label="图片名称">
 				</el-table-column>
+				<el-table-column prop="ImgFace" label="图片封面">
+				</el-table-column>
 				<el-table-column prop="ImgList" label="图片列表">
 				</el-table-column>
 				<el-table-column prop="Visted" label="访问">
@@ -93,6 +95,19 @@ export default {
 				"UnShelveDate": "2017-12-30 20:00:04",
 				"UnShelveOperator": "admin"
 			}]
+		}
+	},
+	methods:{
+		addImage() {
+			this.$router.push({ name: 'addimage' })
+		},
+		viewImage() {
+			// this.$router.push({ name: 'viewimage' ,query: { id: id}})
+			this.$router.push({ name: 'viewimage' })
+		},
+		editImage() {
+			// this.$router.push({ name: 'editimage' ,query: { id: id}})
+			this.$router.push({ name: 'editimage' })
 		}
 	}
 }

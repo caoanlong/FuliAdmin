@@ -1,6 +1,6 @@
 <template>
 	<div class="main-content">
-		11
+		chart
 	</div>
 </template>
 <script type="text/javascript">
