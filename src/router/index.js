@@ -39,6 +39,46 @@ export default new Router({
 					},
 					component: () => import('../components/ImageManage')
 				},
+				{
+					path: '/addimage',
+					name: 'addimage',
+					meta: {
+						title: '添加图片'
+					},
+					component: () => import('../components/ImageManage/AddImage')
+				},
+				{
+					path: '/viewimage',
+					name: 'viewimage',
+					meta: {
+						title: '查看图片'
+					},
+					component: () => import('../components/ImageManage/ViewImage')
+				},
+				{
+					path: '/editimage',
+					name: 'editimage',
+					meta: {
+						title: '编辑图片'
+					},
+					component: () => import('../components/ImageManage/EditImage')
+				},
+				{
+					path: '/membermanage',
+					name: 'membermanage',
+					meta: {
+						title: '会员管理'
+					},
+					component: () => import('../components/MemberManage')
+				},
+				{
+					path: '/usermanage',
+					name: 'usermanage',
+					meta: {
+						title: '用户管理'
+					},
+					component: () => import('../components/UserManage')
+				}
 			]
 		},
 	]

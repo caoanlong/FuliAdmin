@@ -16,15 +16,8 @@
 				</el-form-item>
 			</el-form>
 		</div>
-		<div class="tableControl">
-			<el-button type="default" size="mini" icon="el-icon-plus" @click.native="addImage">添加</el-button>
-			<el-button type="default" size="mini" icon="el-icon-delete" @click.native="deleteConfirm">批量删除</el-button>
-			<el-button type="default" size="mini" icon="el-icon-refresh" @click.native="refresh">刷新</el-button>
-		</div>
 		<div class="F-table">
 			<el-table :data="tableData" border style="width: 100%" size="small">
-				<el-table-column type="selection" width="40" align="center">
-				</el-table-column>
 				<el-table-column type="index" width="40" align="center">
 				</el-table-column>
 				<el-table-column prop="ImgSort" label="图片分类" align="center">
@@ -51,8 +44,8 @@
 				</el-table-column>
 				<el-table-column prop="handle" label="操作" align="center" width="210">
 					<template slot-scope="scope">
-						<el-button size="mini" icon="el-icon-view" @click="viewImage(scope.row._id)">查看</el-button>
-						<el-button size="mini" icon="el-icon-edit" @click="editImage(scope.row._id)">编辑</el-button>
+						<el-button size="mini" icon="el-icon-view" @click="viewUser(scope.row._id)">查看</el-button>
+						<el-button size="mini" icon="el-icon-edit" @click="editUser(scope.row._id)">编辑</el-button>
 						<el-button size="mini" icon="el-icon-delete" @click="deleteConfirm(scope.row._id)">删除</el-button>
 					</template>
 				</el-table-column>
