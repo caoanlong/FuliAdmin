@@ -1,6 +1,6 @@
 <template>
 	<scroll-bar>
-		<el-menu mode="vertical" :default-active="$route.name" :collapse="isCollapse" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF" @select="selectIndex">
+		<el-menu default-active="home" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF" @select="selectIndex">
 			<el-menu-item index="home" class="submenu-title-noDropdown">
 				<svg-icon icon-class="home-icon"></svg-icon>
 				<span slot="title">首页</span>
@@ -15,8 +15,7 @@
 			</el-menu-item>
 			<el-menu-item index="usermanage" class="submenu-title-noDropdown">
 				<svg-icon icon-class="users-icon"></svg-icon>
-				<span slot="title">用户管理</span>
-			</el-menu-item>
+				<span slot="title">用户管理</span></el-menu-item>
 		</el-menu>
 	</scroll-bar>
 </template>
@@ -45,5 +44,6 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
+
 
 </style>
