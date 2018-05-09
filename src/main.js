@@ -12,8 +12,15 @@ import './assets/styles/sidebar.css'
 import App from './App'
 import router from './router'
 import store from './store'
+// global filters
+import * as filters from './filters'
 
 import './assets/icons' // icon
+
+// register global utility filters.
+Object.keys(filters).forEach(key => {
+	Vue.filter(key, filters[key])
+})
 
 Vue.use(Element)
 
