@@ -6,7 +6,7 @@
 				<el-row>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="头像">
-							<ImageUpload :files="[user.HeadPic]" @imgUrlBack="handleAvatarSuccess" :fixed="true"/>
+							<ImageUpload :files="[user.avatar]" @imgUrlBack="handleAvatarSuccess" :fixed="true"/>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
@@ -17,11 +17,6 @@
 					<el-col :span="10" :offset="6">
 						<el-form-item label="手机号码">
 							<el-input auto-complete="off" v-model="user.mobile"></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :span="10" :offset="6">
-						<el-form-item label="用户名">
-							<el-input auto-complete="off" v-model="user.login_name"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
@@ -58,22 +53,37 @@ import ImageUpload from '../../CommonComponents/ImageUpload'
 export default {
 	data(){
 		return{
-			user:[
-				{
-					mobile:'',
-					name: '',
-					is_disabled:'true',
-					HeadPic:''
-				}
-			]
+			user:{
+				mobile:'',
+				name: '',
+				mobile:'',
+				is_disabled:'true',
+				avatar:'',
+				
+			}
+			
 		}
 	},
 	methods:{
 		addUser(){
-
+			let data = this.user
+			console.log(data)
+			request({
+				url: '/sys_user/add',
+				method: 'post',
+				data
+			}).then(res => {
+				if (res.data.code == 0) {
+					console.log(res.data)
+					Message.success(res.data.msg)
+					this.$router.push({ name: 'usermanage' })
+				} else {
+					Message.error(res.data.msg)
+				}
+			})
 		},
 		handleAvatarSuccess(res) {
-			this.user.HeadPic = res[0]
+			this.user.avatar = res[0]
 		},
 		back() {
 			this.$router.go(-1)

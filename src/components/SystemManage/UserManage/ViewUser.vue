@@ -15,16 +15,6 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
-						<el-form-item label="用户名">
-							<p>{{user.demo}}</p>
-						</el-form-item>
-					</el-col>
-					<el-col :span="10" :offset="6">
-						<el-form-item label="手机号码">
-							<p>{{user.demo}}</p>
-						</el-form-item>
-					</el-col>
-					<el-col :span="10" :offset="6">
 						<el-form-item label="是否启用">
 							<p>{{user.demo}}</p>
 						</el-form-item>
@@ -54,8 +44,8 @@ export default {
 		}
 	},
 	methods:{
-		back(){
-
+		back() {
+			this.$router.go(-1)
 		}
 	}
 }
