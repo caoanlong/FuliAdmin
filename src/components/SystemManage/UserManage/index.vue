@@ -32,34 +32,38 @@
 				<el-table :data="users" border style="width: 100%" size="small" stripe>
 					<el-table-column type="index" width="40" align="center">
 					</el-table-column>
-					<el-table-column prop="name" label="用户名">
+					<el-table-column prop="login_name" label="用户名">
 					</el-table-column>
 					<el-table-column prop="name" label="姓名">
 					</el-table-column>
 					<el-table-column prop="mobile" label="电话" align="center" width="100">
 					</el-table-column>
-					<el-table-column prop="mobile" label="角色权限" align="center">
+					<el-table-column prop="role_id" label="角色权限" align="center">
 					</el-table-column>
 					<el-table-column prop="Status" label="状态" align="center" width="80">
 					</el-table-column>
-					<el-table-column prop="date" label="创建时间" align="center">
+					<el-table-column prop="create_time" label="创建时间" align="center">
+						<template slot-scope="scope">
+							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
+						</template>
 					</el-table-column>
-					<el-table-column prop="name" label="创建人" align="center">
+					<el-table-column prop="create_user_id" label="创建人" align="center">
 					</el-table-column>
-					<el-table-column prop="date" label="更新时间" align="center">
+					<el-table-column prop="update_time" label="更新时间" align="center">
+						<template slot-scope="scope">
+							<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+						</template>
 					</el-table-column>
-					<el-table-column prop="name" label="更新人" align="center">
-					</el-table-column>
-					<el-table-column prop="date" label="最后登录时间" align="center">
+					<el-table-column prop="update_user_id" label="更新人" align="center">
 					</el-table-column>
 					<el-table-column width="80" align="center" fixed="right">
 						<template slot-scope="scope">
 							<el-dropdown @command="handleCommand" trigger="click">
 								<el-button type="primary" size="mini">操作<i class="el-icon-arrow-down el-icon--right"></i></el-button>
 								<el-dropdown-menu slot="dropdown">
-									<el-dropdown-item :command="{type: 'view', id:scope.row.userID}">查看</el-dropdown-item>
-									<el-dropdown-item :command="{type: 'edit', id: scope.row.userID}">编辑</el-dropdown-item>
-									<el-dropdown-item :command="{type: 'delete', id: scope.row.userID}">删除</el-dropdown-item>
+									<el-dropdown-item :command="{type: 'view', id:scope.row.user_id}">查看</el-dropdown-item>
+									<el-dropdown-item :command="{type: 'edit', id: scope.row.user_id}">编辑</el-dropdown-item>
+									<el-dropdown-item :command="{type: 'delete', id: scope.row.user_id}">删除</el-dropdown-item>
 								</el-dropdown-menu>
 							</el-dropdown>
 						</template>
@@ -91,9 +95,9 @@ export default {
 	methods: {
 		handleCommand(e) {
 			if (e.type == 'view') {
-				this.$router.push({ name: 'viewuser', query: { userID: e.id } })
+				this.$router.push({ name: 'viewuser', query: { user_id: e.id } })
 			} else if (e.type == 'edit') {
-				this.$router.push({ name: 'edituser', query: { userID: e.id } })
+				this.$router.push({ name: 'edituser', query: { user_id: e.id } })
 			} else if (e.type == 'delete') {
 				this.deleteConfirm(e.id)
 			}
@@ -103,10 +107,11 @@ export default {
 		},
 		getUsers() {
 				let params = {
-					pageIndex: this.pageIndex || 1,
+					pageIndex: this.pageIndex,
 					pageSize: this.pageSize,
-					Mobile: this.findMobile,
-					RealName: this.findName
+					mobile: this.findMobile,
+					name: this.findName,
+					is_disabled:this.findStatus
 				}
 				request({
 					url: '/sys_user/list',

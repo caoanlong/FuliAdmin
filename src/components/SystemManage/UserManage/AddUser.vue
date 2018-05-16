@@ -2,21 +2,26 @@
 	<div class="main-content">
 		<div class="fl-card box-card">
 			<div class="header clearfix">添加用户</div>
-			<el-form label-width="120px" ref="ruleForm">
+			<el-form label-width="120px">
 				<el-row>
 					<el-col :span="10" :offset="6">
+						<el-form-item label="头像">
+							<ImageUpload :files="[user.HeadPic]" @imgUrlBack="handleAvatarSuccess" :fixed="true"/>
+						</el-form-item>
+					</el-col>
+					<el-col :span="10" :offset="6">
 						<el-form-item label="姓名">
-							<el-input auto-complete="off"></el-input>
+							<el-input auto-complete="off" v-model="user.name"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="手机号码">
-							<el-input auto-complete="off"></el-input>
+							<el-input auto-complete="off" v-model="user.mobile"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="用户名">
-							<el-input auto-complete="off"></el-input>
+							<el-input auto-complete="off" v-model="user.login_name"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
@@ -25,13 +30,8 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
-						<el-form-item label="手机号码">
-							<el-input auto-complete="off"></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :span="10" :offset="6">
 						<el-form-item label="是否启用">
-							<el-switch></el-switch>
+							<el-switch v-model="user.is_disabled"></el-switch>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
@@ -52,14 +52,35 @@
 	</div>
 </template>
 <script type="text/javascript">
+import request from '../../../common/request'
+import { Message } from 'element-ui'
+import ImageUpload from '../../CommonComponents/ImageUpload'
 export default {
+	data(){
+		return{
+			user:[
+				{
+					mobile:'',
+					name: '',
+					is_disabled:'true',
+					HeadPic:''
+				}
+			]
+		}
+	},
 	methods:{
 		addUser(){
 
 		},
-		back(){
-
+		handleAvatarSuccess(res) {
+			this.user.HeadPic = res[0]
+		},
+		back() {
+			this.$router.go(-1)
 		}
+	},
+	components: {
+		ImageUpload
 	}
 }
 
