@@ -5,16 +5,16 @@
 			<div class="search">
 				<el-form :inline="true" class="demo-form-inline" size="small">
 					<el-form-item label="用户名">
-						<el-input placeholder="用户名"></el-input>
+						<el-input placeholder="用户名" v-model="findLoginName"></el-input>
 					</el-form-item>
 					<el-form-item label="姓名">
-						<el-input placeholder="姓名"></el-input>
+						<el-input placeholder="姓名" findName></el-input>
 					</el-form-item>
 					<el-form-item label="手机号码">
-						<el-input placeholder="手机号码"></el-input>
+						<el-input placeholder="手机号码" v-model="findMobile"></el-input>
 					</el-form-item>
 					<el-form-item label="状态">
-						<el-select placeholder="请选择" value="">
+						<el-select placeholder="请选择" v-model="findStatus">
 							<el-option label="启用" value="启用"></el-option>
 							<el-option label="禁用" value="禁用"></el-option>
 						</el-select>
@@ -29,7 +29,7 @@
 				<el-button type="default" size="mini" icon="el-icon-plus" @click.native="add">添加</el-button>
 			</div>
 			<div class="F-table">
-				<el-table :data="tableData" border style="width: 100%" size="small" stripe>
+				<el-table :data="users" border style="width: 100%" size="small" stripe>
 					<el-table-column type="index" width="40" align="center">
 					</el-table-column>
 					<el-table-column prop="name" label="用户名">
@@ -70,36 +70,23 @@
 	</div>
 </template>
 <script type="text/javascript">
+import request from '../../../common/request'
+import { Message } from 'element-ui'
 export default {
 	name: 'usermanage',
 	data() {
 		return {
-			tableData: [{
-				userID: '65432132131',
-				date: '2016-05-02',
-				name: '王小虎',
-				mobile: '13800138001',
-				Status: '封停'
-			}, {
-				userID: '65432132131',
-				date: '2016-05-04',
-				name: '王小虎',
-				mobile: '13800138002',
-				Status: '启用'
-			}, {
-				userID: '65432132131',
-				date: '2016-05-01',
-				name: '王小虎',
-				mobile: '13800138003',
-				Status: '封停'
-			}, {
-				userID: '65432132131',
-				date: '2016-05-03',
-				name: '王小虎',
-				mobile: '13800138004',
-				Status: '启用'
-			}]
+			users: [],
+			pageIndex:1,
+			pageSize:10,
+			count:0,
+			findMobile:'',
+			findName:'',
+			findStatus:''
 		}
+	},
+	created() {
+		this.getUsers()
 	},
 	methods: {
 		handleCommand(e) {
@@ -113,7 +100,27 @@ export default {
 		},
 		add() {
 			this.$router.push({ name: 'adduser' })
-		}
+		},
+		getUsers() {
+				let params = {
+					pageIndex: this.pageIndex || 1,
+					pageSize: this.pageSize,
+					Mobile: this.findMobile,
+					RealName: this.findName
+				}
+				request({
+					url: '/sys_user/list',
+					method: 'get',
+					params
+				}).then(res => {
+					if (res.data.code == 0) {
+						this.count = res.data.data.count
+						this.users = res.data.data.rows
+					} else {
+						Message.error(res.data.msg)
+					}
+				})
+			},
 	}
 }
 
