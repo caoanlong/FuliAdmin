@@ -58,3 +58,11 @@ code a:hover{color:#20a0ff;}
 .main-content{padding:20px;}
 .F-table .el-button--mini{padding:3px 6px;}
 .F-table .el-button+.el-button{margin-left:5px;}
+
+.fl-card{padding:10px;background:#fff;-webkit-box-shadow:0 2px 12px 0 rgba(0,0,0,.1);-moz-box-shadow:0 2px 12px 0 rgba(0,0,0,.1);box-shadow:0 2px 12px 0 rgba(0,0,0,.1);}
+.fl-card .header{background:#e2ecf6;height:50px;line-height:50px;padding:0 15px;color:#3582d0;position:relative;margin-bottom:20px;}
+.fl-table{background:#e2ecf6;border-spacing:1px;width:100%;margin-bottom:10px;font-size:14px;}
+.fl-table caption{height:40px;line-height:40px;text-align:left;background:#e2ecf6;color:#3582d0;font-weight:bold;padding:0 15px;}
+.fl-table th,.fl-table td{background:#fff;padding:6px 10px;height:36px;line-height:24px;color:#666;}
+.fl-table .labels{color:#3582d0}
+.fl-table th,.fl-table .total td{background:#f3f7fa;color:#7eaad7;}

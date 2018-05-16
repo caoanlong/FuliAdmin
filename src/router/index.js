@@ -77,7 +77,80 @@ export default new Router({
 					meta: {
 						title: '用户管理'
 					},
-					component: () => import('../components/UserManage')
+					component: () => import('../components/SystemManage/UserManage')
+				},
+				{
+					path: '/adduser',
+					name: 'adduser',
+					meta: {
+						title: '添加用户'
+					},
+					component: () => import('../components/SystemManage/UserManage/AddUser')
+				}
+				,
+				{
+					path: '/edituser',
+					name: 'edituser',
+					meta: {
+						title: '编辑用户'
+					},
+					component: () => import('../components/SystemManage/UserManage/EditUser')
+				},
+				{
+					path: '/viewuser',
+					name: 'viewuser',
+					meta: {
+						title: '用户详情'
+					},
+					component: () => import('../components/SystemManage/UserManage/ViewUser')
+				},
+				{
+					path: '/rolemanage',
+					name: 'rolemanage',
+					meta: {
+						title: '角色管理'
+					},
+					component: () => import('../components/SystemManage/RoleManage')
+				},
+				{
+					path: '/addrole',
+					name: 'addrole',
+					meta: {
+						title: '添加角色'
+					},
+					component: () => import('../components/SystemManage/RoleManage/AddRole')
+				},
+				{
+					path: '/editrole',
+					name: 'editrole',
+					meta: {
+						title: '编辑角色'
+					},
+					component: () => import('../components/SystemManage/RoleManage/EditRole')
+				},
+				{
+					path: '/viewrole',
+					name: 'viewrole',
+					meta: {
+						title: '角色详情'
+					},
+					component: () => import('../components/SystemManage/RoleManage/ViewRole')
+				},
+				{
+					path: '/dictmanage',
+					name: 'dictmanage',
+					meta: {
+						title: '字典管理'
+					},
+					component: () => import('../components/SystemManage/DictManage')
+				},
+				{
+					path: '/menumanage',
+					name: 'menumanage',
+					meta: {
+						title: '菜单管理'
+					},
+					component: () => import('../components/SystemManage/MenuManage')
 				}
 			]
 		},
