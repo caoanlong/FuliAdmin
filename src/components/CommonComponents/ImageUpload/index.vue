@@ -137,7 +137,7 @@
 				})
 			},
 			uploadFile(data, cb) {
-				let url = BASE_API + "/sys/picture/upload"
+				let url = this.baseApi + "/image/upload/single"
 				let headers = {'Content-type':'multipart/form-data;charset=UTF-8'}
 				let params = formDataReq({
 					"file": data
