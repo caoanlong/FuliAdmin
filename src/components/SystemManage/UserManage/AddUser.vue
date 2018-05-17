@@ -53,13 +53,12 @@ import ImageUpload from '../../CommonComponents/ImageUpload'
 export default {
 	data(){
 		return{
-			user:{
+			user: {
 				mobile:'',
 				name: '',
 				mobile:'',
 				is_disabled:'true',
-				avatar:'',
-				
+				avatar:''
 			}
 			
 		}
