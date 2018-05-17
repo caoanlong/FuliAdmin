@@ -131,19 +131,14 @@ export default {
 				name: this.findName,
 				is_disabled:this.findStatus
 			}
-			console.log(params)
 			request({
 				url: '/sys_user/list',
 				method: 'get',
 				params
 			}).then(res => {
-				if (res.data.code == 0) {
-					this.count = res.data.data.count
-					this.users = res.data.data.rows
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				this.count = res.data.data.count
+				this.users = res.data.data.rows
+			}).catch(err => {})
 		},
 		selectionChange(data) {
 			this.selectedList = data.map(item => item.user_id)

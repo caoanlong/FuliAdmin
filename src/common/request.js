@@ -40,6 +40,7 @@ service.interceptors.response.use(
 			Message.error(response.data.msg)
 			return Promise.reject('error')
 		}
+		return response
 	},
 	error => {
 		Message({
