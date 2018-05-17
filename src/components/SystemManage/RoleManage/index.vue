@@ -3,7 +3,7 @@
 		<div class="search">
 			<el-form :inline="true" class="demo-form-inline" size="small">
 				<el-form-item label="角色名称">
-					<el-input placeholder="角色名称"></el-input>
+					<el-input placeholder="角色名称" v-model="findName"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click.native="getList">查询</el-button>
@@ -17,31 +17,51 @@
 		</div>
 		<div class="F-table">
 			<el-table :data="roles" border style="width: 100%" size="small" stripe>
-				<el-table-column type="index" width="40" align="center">
-				</el-table-column>
+				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
 				<el-table-column prop="name" label="角色名称">
 				</el-table-column>
-				<el-table-column prop="mobile" label="权限范围" align="center">
-				</el-table-column>
-				<el-table-column prop="date" label="创建时间" align="center">
-				</el-table-column>
-				<el-table-column prop="name" label="创建人" align="center">
-				</el-table-column>
-				<el-table-column prop="date" label="更新时间" align="center">
-				</el-table-column>
-				<el-table-column prop="name" label="更新人" align="center">
-				</el-table-column>
-				<el-table-column prop="remark" label="备注" align="center">
-				</el-table-column>
-				<el-table-column width="110" align="center" fixed="right">
+				<el-table-column prop="create_time" label="创建时间" align="center" width="140">
 					<template slot-scope="scope">
-						<el-button type="default" size="mini" @click="edit(scope.row.Role_ID)">编辑</el-button>
-						<el-button type="default" size="mini" @click="deleteConfirm(scope.row.Role_ID)">删除</el-button>
-						<!-- <el-button type="default" size="mini" @click="setAuth(scope.row.Role_ID)">删除</el-button> -->
-						<!-- <el-button type="default" size="mini" @click="setUser(scope.row.Role_ID)">删除</el-button> -->
+						<span v-if="scope.row.create_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="create_user_id" label="创建人" align="center">
+				</el-table-column>
+				<el-table-column prop="update_time" label="更新时间" align="center" width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="update_user_id" label="更新人" align="center">
+				</el-table-column>
+				<el-table-column width="250" align="center" fixed="right">
+					<template slot-scope="scope">
+						<el-button type="default" size="mini" @click="edit(scope.row.role_id)">编辑</el-button>
+						<el-button type="default" size="mini" @click="deleteConfirm(scope.row.role_id)">删除</el-button>
+						<el-button type="default" size="mini" @click="setAuth(scope.row.role_id)">设置权限</el-button>
+						<el-button type="default" size="mini" @click="setUser(scope.row.role_id)">分配用户</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
+			<el-row type="flex">
+				<el-col :span="12" style="padding-top: 15px; font-size: 12px; color: #909399">
+					<span>总共 {{count}} 条记录每页显示</span>
+					<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getList()">
+						<el-option label="10" :value="10"></el-option>
+						<el-option label="20" :value="20"></el-option>
+						<el-option label="30" :value="30"></el-option>
+						<el-option label="40" :value="40"></el-option>
+						<el-option label="50" :value="50"></el-option>
+						<el-option label="100" :value="100"></el-option>
+					</el-select>
+					<span>条记录</span>
+				</el-col>
+				<el-col :span="12">
+					<div class="pagination">
+						<el-pagination :page-size="pageSize" align="right" background layout="prev, pager, next" :total="count" @current-change="pageChange"></el-pagination>
+					</div>
+				</el-col>
+			</el-row>
 		</div>
 	</div>
 </template>
@@ -53,23 +73,36 @@ export default {
 	data() {
 		return {
 			selectedList:[],
-			roles: []
+			roles: [],
+			pageIndex:1,
+			pageSize:10,
+			count:0,
+			findName:''
 		}
 	},
 	created() {
 		this.getList()
 	},
 	methods: {
+		pageChange(index) {
+			this.pageIndex = index
+			this.getList()
+		},
+		reset(){
+			this.findName='',
+			this.getList()
+		},
 		add() {
 			this.$router.push({ name: 'addrole' })
 		},
-		edit(Role_ID) {
-			this.$router.push({ name: 'editrole' ,query: { Role_ID}})
+		edit(role_id) {
+			this.$router.push({ name: 'editrole' ,query: { role_id}})
 		},
 		getList() {
 			let params = {
 				pageIndex: this.pageIndex,
-				pageSize: this.pageSize
+				pageSize: this.pageSize,
+				name:this.findName
 			}
 			console.log(params)
 			request({
@@ -79,7 +112,7 @@ export default {
 			}).then(res => {
 				if (res.data.code == 0) {
 					this.count = res.data.data.count
-					this.users = res.data.data.rows
+					this.roles = res.data.data.rows
 				} else {
 					Message.error(res.data.msg)
 				}
