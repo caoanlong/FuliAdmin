@@ -1,20 +1,20 @@
 <template>
 	<div class="login-container">
-		<el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+		<el-form class="login-form" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
 			<div class="title-container">
 				<h3 class="title">福利后台管理系统</h3>
 			</div>
-			<el-form-item prop="username">
+			<el-form-item prop="mobile">
 				<span class="svg-container svg-container_login">
 					<svg-icon icon-class="user"/>
 				</span>
-				<el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入用户名" />
+				<el-input name="mobile" type="text" v-model="loginForm.mobile" placeholder="请输入手机号" />
 			</el-form-item>
 			<el-form-item prop="password">
 				<span class="svg-container">
 					<svg-icon icon-class="password"/>
 				</span>
-				<el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码" />
+				<el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" placeholder="请输入密码" />
 				<span class="show-pwd" @click="showPwd">
 					<svg-icon icon-class="eye"/>
 				</span>
@@ -24,31 +24,23 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import {isvalidUsername} from '../common/validator'
+	import { checkMobile } from '../common/validator'
 	export default {
 		data () {
-			const validateUsername = (rule, value, callback) => {
-				if (!isvalidUsername(value)) {
-					callback(new Error('请输入正确的用户名！'))
-				} else {
-					callback()
-				}
-			}
-			const validatePassword = (rule, value, callback) => {
-				if (value.length < 6) {
-					callback(new Error('密码不能少于6位！'))
-				} else {
-					callback()
-				}
-			}
 			return {
 				loginForm: {
-					username: 'admin',
-					password: '1111111'
+					mobile: '',
+					password: ''
 				},
 				loginRules: {
-					username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-					password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+					mobile: [
+						{ required: true, message: '手机号不能为空' },
+						{ validator: checkMobile }
+					],
+					password: [
+						{ required: true, message: '密码不能为空' },
+						{ min: 5, max: 20, message: '长度在 5 到 20 个字符' }
+					]
 				},
 				passwordType: 'password',
 				loading: false
@@ -66,14 +58,13 @@
 				this.$refs.loginForm.validate(valid => {
 					if (valid) {
 						this.loading = true
-						this.$router.push({name: 'home'})
-						// this.$store.dispatch('Login', this.loginForm).then(() => {
-						// 	this.loading = false
-						// 	this.$router.push({ path: '/' })
-						// }).catch((err) => {
-						// 	console.log(err)
-						// 	this.loading = false
-						// })
+						this.$store.dispatch('Login', this.loginForm).then(() => {
+							this.loading = false
+							this.$router.push({ path: '/' })
+						}).catch((err) => {
+							console.log(err)
+							this.loading = false
+						})
 					} else {
 						console.log('error submit!!')
 						return false

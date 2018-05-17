@@ -1,10 +1,8 @@
-import { getToken, setToken, removeToken } from '../../common/auth'
+import { login, getUserInfo, logout } from '../../api/login'
 const user = {
 	state: {
 		name: '',
-		code: '',
-		token: getToken(),
-		roles: [],
+		token: localStorage.getItem('token'),
 		avatar: ''
 	},
 	mutations: {
@@ -14,42 +12,36 @@ const user = {
 		SET_TOKEN: (state, token) => {
 			state.token = token
 		},
-		SET_ROLES: (state, roles) => {
-			state.roles = roles
-		},
 		SET_AVATAR: (state, avatar) => {
 			state.avatar = avatar
 		}
 	},
 	actions: {
-		Login ({commit}, userInfo) {
-			const username = userInfo.username.trim()
+		Login ({ commit }, userInfo) {
+			const mobile = userInfo.mobile.trim()
 			const password = userInfo.password
-			// return new Promise((resolve, reject) => {
-			// 	login(username, password).then(response => {
-			// 		const data = response.data
-			// 		commit('SET_NAME', data.username)
-			// 		commit('SET_ROLES', data.roles.split(','))
-			// 		commit('SET_AVATAR', data.avatar)
-			// 		commit('SET_TOKEN', data.token)
-			// 		localStorage.setItem('username', data.username)
-			// 		localStorage.setItem('roles', data.roles)
-			// 		localStorage.setItem('avatar', data.avatar)
-			// 		setToken(data.token)
-			// 		resolve()
-			// 	}).catch(error => {
-			// 		reject(error)
-			// 	})
-			// })
+			return new Promise((resolve, reject) => {
+				login(mobile, password).then(response => {
+					const data = response.data
+					const token = response.headers['X-Access-Token']
+					commit('SET_NAME', data.name)
+					commit('SET_AVATAR', data.avatar)
+					commit('SET_TOKEN', token)
+					localStorage.setItem('name', data.name)
+					localStorage.setItem('avatar', data.avatar)
+					localStorage.setItem('token', token)
+					resolve()
+				}).catch(error => {
+					reject(error)
+				})
+			})
 		},
 		LogOut({ commit, state }) {
 			return new Promise((resolve, reject) => {
 				logout(state.token).then(() => {
 					commit('SET_NAME', '')
-					commit('SET_ROLES', [])
 					commit('SET_AVATAR', '')
 					commit('SET_TOKEN', '')
-					removeToken()
 					localStorage.clear()
 					resolve()
 				}).catch(error => {
@@ -68,17 +60,6 @@ const user = {
 				// }).catch(error => {
 				// 	reject(error)
 				// })
-			})
-		},
-		FedLogOut({ commit }) {
-			return new Promise((resolve, reject) => {
-				commit('SET_NAME', '')
-				commit('SET_ROLES', [])
-				commit('SET_AVATAR', '')
-				commit('SET_TOKEN', '')
-				removeToken()
-				localStorage.clear()
-				resolve()
 			})
 		}
 	}
