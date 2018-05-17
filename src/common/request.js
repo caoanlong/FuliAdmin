@@ -33,24 +33,15 @@ service.interceptors.response.use(
 		if (response.data.code != 0) {
 			if (response.data.code == 10016) {
 				localStorage.clear()
-				if (response.data.msg) {
-					Message.error(response.data.msg)
-				} else {
-					Message.error(response.data.message)
-				}
+				Message.error(response.data.msg)
 				window.location.href = '/#/login'
 				return Promise.reject('error')
 			}
-			if (response.data.msg) {
-				Message.error(response.data.msg)
-			} else {
-				Message.error(response.data.message)
-			}
+			Message.error(response.data.msg)
 			return Promise.reject('error')
 		}
 	},
 	error => {
-		console.log('err' + error)// for debug
 		Message({
 			message: error.message,
 			type: 'error',
