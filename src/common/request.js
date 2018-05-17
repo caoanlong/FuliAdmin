@@ -1,5 +1,4 @@
 import axios from 'axios'
-import qs from 'qs'
 import { Message } from 'element-ui'
 import store from '../store'
 
@@ -14,11 +13,6 @@ service.interceptors.request.use(config => {
 	if (localStorage.getItem('token')) {
 		config.headers['X-Access-Token'] = localStorage.getItem('token')
 	}
-	config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-	if (config.data && config.headers['Content-Type'].includes('application/x-www-form-urlencoded')) {
-    	config.data = qs.stringify(config.data)
-	}
-	console.log(config)
 	return config
 }, error => {
 	// Do something with request error
