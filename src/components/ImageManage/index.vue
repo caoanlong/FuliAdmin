@@ -58,9 +58,9 @@
 				</el-table-column>
 				<el-table-column prop="handle" label="操作" align="center" width="210">
 					<template slot-scope="scope">
-						<el-button size="mini" icon="el-icon-view" @click="view(scope.row._id)">查看</el-button>
-						<el-button size="mini" icon="el-icon-edit" @click="edit(scope.row._id)">编辑</el-button>
-						<el-button size="mini" icon="el-icon-delete" @click="deleteConfirm(scope.row._id)">删除</el-button>
+						<el-button size="mini" @click="view(scope.row._id)">查看</el-button>
+						<el-button size="mini" @click="edit(scope.row._id)">编辑</el-button>
+						<el-button size="mini" @click="deleteConfirm(scope.row._id)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -118,10 +118,10 @@ export default {
 			this.getList()
 		},
 		add() {
-			this.$router.push({ name: 'adduser' })
+			this.$router.push({ name: 'addimg' })
 		},
 		edit(user_id) {
-			this.$router.push({ name: 'edituser' ,query: { user_id}})
+			this.$router.push({ name: 'editimg' ,query: { user_id}})
 		},
 		getList() {
 			let params = {
