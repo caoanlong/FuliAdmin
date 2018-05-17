@@ -62,30 +62,39 @@
 	</div>
 </template>
 <script type="text/javascript">
-
+import request from '../../../common/request'
 import { Message } from 'element-ui'
 export default {
 	data() {
 		return {
-			count:33,
+			count:0,
 			pageIndex: 1,
 			pageSize: 10,
-			dicts:[{
-				dictID:1,
-				demo:11111,
-				sort:1
-			}
-			]
+			dicts:[],
+			selectedList:[]
 		}
 	},
 	created() {
-		
+		this.getList()
 	},
 	methods: {
 		pageChange(index) {
 			this.pageIndex = index
 		},
-		getDict(){},
+		getList() {
+			let params = {
+				pageIndex: this.pageIndex,
+				pageSize: this.pageSize,
+			}
+			request({
+				url: '/sys_dict/list',
+				method: 'get',
+				params
+			}).then(res => {
+				this.count = res.data.data.count
+				this.users = res.data.data.rows
+			}).catch(err => {})
+		},
 		add(){},
 		reset(){},
 		handleCommand(e) {
@@ -128,6 +137,10 @@ export default {
 				})
 			})
 		},
+		selectionChange(data) {
+			this.selectedList = data.map(item => item.dict_id)
+			console.log(this.selectedList )
+		},
 		delDict(ids) {
 			let data = {
 				ids: ids
@@ -137,12 +150,8 @@ export default {
 				method: 'post',
 				data
 			}).then(res => {
-				if (res.data.code == 0) {
-					this.getDict()
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				this.getDict()
+			}).catch(err => {})
 		},
 		
 	},

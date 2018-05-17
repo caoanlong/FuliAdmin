@@ -56,12 +56,8 @@ import { Message } from 'element-ui'
 					method: 'get',
 					params
 				}).then(res => {
-					if (res.data.code == 0) {
-						this.role = res.data.data
-					} else {
-						Message.error(res.data.msg)
-					}
-				})
+					this.role = res.data.data
+				}).catch(err => {})
 			},
 			editRole() {
 				let data = this.role
@@ -70,13 +66,9 @@ import { Message } from 'element-ui'
 					method: 'post',
 					data
 				}).then(res => {
-					if (res.data.code == 0) {
-						Message.success(res.data.msg)
-						this.$router.push({ name: 'rolemanage' })
-					} else {
-						Message.error(res.data.msg)
-					}
-				})
+					Message.success(res.data.msg)
+					this.$router.push({ name: 'rolemanage' })
+				}).catch(err => {})
 			},
 			back() {
 				this.$router.go(-1)

@@ -242,14 +242,10 @@ export default {
 				method: 'get',
 				params
 			}).then(res => {
-				if (res.data.code == 0) {
-					this.currentNode = res.data.data
-					this.isShow = res.data.data.IsShow == 'Y' ? true : false
-					this.selectedRoles = res.data.data.sys_roles.map(item => item.Role_ID)
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				this.currentNode = res.data.data
+				this.isShow = res.data.data.IsShow == 'Y' ? true : false
+				this.selectedRoles = res.data.data.sys_roles.map(item => item.Role_ID)
+			}).catch(err => {})
 		},
 		// 获取角色
 		getRoles() {
@@ -261,18 +257,14 @@ export default {
 				method: 'get',
 				params
 			}).then(res => {
-				if (res.data.code == 0) {
-					let Oroles = res.data.data.rows
-					this.roles = Oroles.map(item => {
-						return {
-							role_id: item.role_id,
-							name: item.name
-						}
-					})
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				let Oroles = res.data.data.rows
+				this.roles = Oroles.map(item => {
+					return {
+						role_id: item.role_id,
+						name: item.name
+					}
+				})
+			}).catch(err => {})
 		}
 	}
 }
