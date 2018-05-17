@@ -56,8 +56,8 @@
 					</el-table-column>
 					<el-table-column width="110" align="center" fixed="right">
 						<template slot-scope="scope">
-							<el-button type="default" size="mini" @click="edit(scope.row.user_id)">编辑</el-button>
-							<el-button type="default" size="mini" @click="deleteConfirm(scope.row.user_id)">删除</el-button>
+							<el-button type="primary" size="mini" @click="edit(scope.row.user_id)">编辑</el-button>
+							<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.user_id)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>

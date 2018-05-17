@@ -16,7 +16,7 @@
 			<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>	
 		</div>
 		<div class="F-table">
-			<el-table :data="roles" border style="width: 100%" size="small" stripe>
+			<el-table :data="roles"  @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
 				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
 				<el-table-column prop="name" label="角色名称">
 				</el-table-column>
@@ -36,10 +36,10 @@
 				</el-table-column>
 				<el-table-column width="250" align="center" fixed="right">
 					<template slot-scope="scope">
-						<el-button type="default" size="mini" @click="edit(scope.row.role_id)">编辑</el-button>
-						<el-button type="default" size="mini" @click="deleteConfirm(scope.row.role_id)">删除</el-button>
-						<el-button type="default" size="mini" @click="setAuth(scope.row.role_id)">设置权限</el-button>
-						<el-button type="default" size="mini" @click="setUser(scope.row.role_id)">分配用户</el-button>
+						<el-button type="primary" size="mini" @click="edit(scope.row.role_id)">编辑</el-button>
+						<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.role_id)">删除</el-button>
+						<el-button type="warning" size="mini" click="setAuth(scope.row.role_id)">设置权限</el-button>
+						<el-button type="success" size="mini" click="setUser(scope.row.role_id)">分配用户</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -84,6 +84,9 @@ export default {
 		this.getList()
 	},
 	methods: {
+		selectionChange(data) {
+			this.selectedList = data.map(item => item.role_id)
+		},
 		pageChange(index) {
 			this.pageIndex = index
 			this.getList()
@@ -104,7 +107,6 @@ export default {
 				pageSize: this.pageSize,
 				name:this.findName
 			}
-			console.log(params)
 			request({
 				url: '/sys_role/list',
 				method: 'get',
@@ -132,7 +134,6 @@ export default {
 				}
 				ids = this.selectedList.join(',')
 			}
-			console.log(ids)
 			this.$confirm('此操作将永久删除, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
@@ -155,7 +156,7 @@ export default {
 				ids: ids
 			}
 			request({
-				url: '/sys_user/delete',
+				url: '/sys_role/delete',
 				method: 'post',
 				data
 			}).then(res => {

@@ -25,7 +25,7 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
-						<el-form-item label="是否启用">
+						<el-form-item label="是否禁用">
 							<el-switch v-model="user.is_disabled"></el-switch>
 						</el-form-item>
 					</el-col>

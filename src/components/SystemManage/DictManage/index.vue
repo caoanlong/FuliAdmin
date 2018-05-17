@@ -14,7 +14,7 @@
 						<el-input placeholder="描述"></el-input>
 					</el-form-item>
 					<el-form-item>
-						<el-button type="primary" @click="getDict()">查询</el-button>
+						<el-button type="primary" @click="getList()">查询</el-button>
 						<el-button type="default" @click="reset">重置</el-button>
 					</el-form-item>
 				</el-form>
@@ -23,31 +23,25 @@
 				<el-button type="default" size="mini" icon="el-icon-plus" @click="add">添加</el-button>
 				<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>
 			</div>
-			<div class="table">
-				<el-table :data="dicts" border style="width: 100%" size="mini">
+			<div class="F-table">
+				<el-table :data="dicts"  @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
 					<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
 					<el-table-column label="键值" prop="demo"></el-table-column>
 					<el-table-column label="标签" prop="demo"></el-table-column>
 					<el-table-column label="类型" prop="demo"></el-table-column>
 					<el-table-column label="描述" prop="demo"></el-table-column>
 					<el-table-column label="排序" prop="sort" align="center" width="60"></el-table-column>
-					<el-table-column width="80" align="center" fixed="right">
+					<el-table-column width="110" align="center" fixed="right">
 						<template slot-scope="scope">
-							<el-dropdown  @command="handleCommand"  trigger="click">
-								<el-button type="primary" size="mini">操作<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-								<el-dropdown-menu slot="dropdown">
-									<el-dropdown-item :command="{type: 'view', id:scope.row.dictID}">查看</el-dropdown-item>
-									<el-dropdown-item :command="{type: 'edit', id: scope.row.dictID}">编辑</el-dropdown-item>
-									<el-dropdown-item :command="{type: 'delete', id: scope.row.dictID}" >删除</el-dropdown-item>
-								</el-dropdown-menu>
-							</el-dropdown>
+							<el-button type="primary" size="mini" @click="edit(scope.row.dict_id)">编辑</el-button>
+							<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.dict_id)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
 				<el-row type="flex">
 					<el-col :span="12" style="padding-top: 15px; font-size: 12px; color: #909399">
 						<span>总共 {{count}} 条记录每页显示</span>
-						<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getDict()">
+						<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getList()">
 							<el-option label="10" :value="10"></el-option>
 							<el-option label="20" :value="20"></el-option>
 							<el-option label="30" :value="30"></el-option>

@@ -144,7 +144,6 @@ export default new Router({
 						}
 					]
 				},
-
 			]
 		},
 	]
