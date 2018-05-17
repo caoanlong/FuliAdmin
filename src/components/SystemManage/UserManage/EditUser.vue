@@ -31,7 +31,9 @@
 					</el-col>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="角色权限">
-							<el-select style="width: 100%" multiple placeholder="请选择" value="">
+							<el-select style="width: 100%" v-model="user.role_id" placeholder="请选择">
+								<el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.role_id">
+								</el-option>
 							</el-select>
 						</el-form-item>
 					</el-col>
@@ -53,11 +55,19 @@ import ImageUpload from '../../CommonComponents/ImageUpload'
 export default {
 	data(){
 		return{
-			user: {}
+			user: {
+				name:'',
+				mobile:'',
+				password:'',
+				is_disabled:'',
+				role_id: '',
+			},
+			roles:[]
 		}
 	},
 	created() {
 		this.getInfo()
+		this.getRoleList()
 	},
 	methods:{
 		getInfo(){
@@ -71,6 +81,28 @@ export default {
 			}).then(res => {
 				if (res.data.code == 0) {
 					this.user = res.data.data
+				} else {
+					Message.error(res.data.msg)
+				}
+			})
+		},
+		getRoleList() {
+			let params = {
+				pageSize: 100
+			}
+			request({
+				url: '/sys_role/list',
+				method: 'get',
+				params
+			}).then(res => {
+				if (res.data.code == 0) {
+					let Oroles = res.data.data.rows
+					this.roles = Oroles.map(item => {
+						return {
+							role_id: item.role_id,
+							name: item.name
+						}
+					})
 				} else {
 					Message.error(res.data.msg)
 				}

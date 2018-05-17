@@ -33,7 +33,7 @@
 					</el-table-column>
 					<el-table-column prop="mobile" label="电话" align="center" width="100">
 					</el-table-column>
-					<el-table-column prop="role_id" label="角色权限" align="center">
+					<el-table-column prop="sys_role.name" label="角色权限" align="center">
 					</el-table-column>
 					<el-table-column prop="is_disabled" label="状态" align="center" width="60">
 						<template slot-scope="scope">
