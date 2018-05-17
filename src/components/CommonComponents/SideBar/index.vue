@@ -1,6 +1,6 @@
 <template>
 	<scroll-bar>
-		<el-menu default-active="home" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF" @select="selectIndex">
+		<el-menu :default-active="$route.name" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF" @select="selectIndex">
 			<el-menu-item index="home" class="submenu-title-noDropdown">
 				<svg-icon icon-class="home-icon"></svg-icon>
 				<span slot="title">首页</span>
@@ -48,8 +48,8 @@ export default {
 		ScrollBar
 	}
 }
-
 </script>
 <style lang="stylus" scoped>
+
 
 </style>

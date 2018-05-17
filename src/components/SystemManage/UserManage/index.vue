@@ -37,7 +37,9 @@
 					</el-table-column>
 					<el-table-column prop="is_disabled" label="状态" align="center" width="60">
 						<template slot-scope="scope">
-							<span>{{ scope.row.is_disabled?'禁用':'正常'}}</span>
+							<el-tag size="mini" type="info" v-if="scope.row.is_disabled">禁用</el-tag>
+							<el-tag size="mini" type="success" v-else>正常</el-tag>
+
 						</template>
 					</el-table-column>
 					<el-table-column prop="create_time" label="创建时间" align="center"  width="140">
