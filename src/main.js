@@ -16,6 +16,7 @@ import store from './store'
 import * as filters from './filters'
 
 import './assets/icons' // icon
+import globals from '../src/common/global'
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
@@ -23,6 +24,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.use(Element)
+Vue.use(globals)
 
 Vue.config.productionTip = false
 

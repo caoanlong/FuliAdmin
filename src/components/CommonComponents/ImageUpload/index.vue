@@ -137,12 +137,12 @@
 				})
 			},
 			uploadFile(data, cb) {
-				let url = this.baseApi + "/image/upload/single"
+				let url = 'http://47.106.171.37:3000/image/upload/single'
 				let headers = {'Content-type':'multipart/form-data;charset=UTF-8'}
 				let params = formDataReq({
 					"file": data
 				})
-				axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+				// axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 				axios.post(url, params, headers).then(res => {
 					this.fileUrl.push(res.data.data)
 					this.$emit('imgUrlBack', this.fileUrl)
