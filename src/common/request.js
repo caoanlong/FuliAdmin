@@ -24,7 +24,10 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
 	response => {
 		if (response.data.code != 0) {
-			if (response.data.code == 10016) {
+			if (   response.data.code == 101
+				|| response.data.code == 102
+				|| response.data.code == 103
+				|| response.data.code == 104 ) {
 				localStorage.clear()
 				Message.error(response.data.msg)
 				window.location.href = '/#/login'
