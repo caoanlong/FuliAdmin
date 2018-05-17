@@ -7,18 +7,7 @@ import { getToken } from '../common/auth'
 // create an axios instance
 const service = axios.create({
 	baseURL: process.env.BASE_API, // api的base_url
-	timeout: 5000, // request timeout
-	// transformRequest: [function (data) {
-	// 	// Do whatever you want to transform the data
-	// 	let ret = ''
-	// 	for (let it in data) {
-	// 	  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-	// 	}
-	// 	return ret
-	// }],
-	// headers: {
-	// 	'Content-Type': 'application/x-www-form-urlencoded'
-	// }
+	timeout: 5000 // request timeout
 })
 
 // request interceptor
