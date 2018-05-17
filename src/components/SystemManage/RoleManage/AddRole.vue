@@ -65,7 +65,6 @@ import { Message } from 'element-ui'
 					}
 				})
 			},
-			
 			back() {
 				this.$router.go(-1)
 			}

@@ -11,27 +11,23 @@ export default new Router({
 		{
 			path: '/404',
 			name: '404',
-			component: () =>
-				import ('../components/404')
+			component: () => import ('../components/404')
 		},
 		{
 			path: '/login',
 			name: 'login',
-			component: () =>
-				import ('../components/Login')
+			component: () => import ('../components/Login')
 		},
 		{
 			path: '',
-			component: () =>
-				import ('../components/Layout'),
+			component: () => import ('../components/Layout'),
 			children: [{
 					path: '/',
 					name: 'home',
 					meta: {
 						title: '首页'
 					},
-					component: () =>
-						import ('../components/Home')
+					component: () => import ('../components/Home')
 				},
 				{
 					path: '/imagemanage',
@@ -39,8 +35,7 @@ export default new Router({
 					meta: {
 						title: '图片管理'
 					},
-					component: () =>
-						import ('../components/ImageManage')
+					component: () => import ('../components/ImageManage')
 				},
 				{
 					path: '/addimage',
@@ -48,8 +43,7 @@ export default new Router({
 					meta: {
 						title: '添加图片'
 					},
-					component: () =>
-						import ('../components/ImageManage/AddImage')
+					component: () => import ('../components/ImageManage/AddImage')
 				},
 				{
 					path: '/viewimage',
@@ -57,8 +51,7 @@ export default new Router({
 					meta: {
 						title: '查看图片'
 					},
-					component: () =>
-						import ('../components/ImageManage/ViewImage')
+					component: () => import ('../components/ImageManage/ViewImage')
 				},
 				{
 					path: '/editimage',
@@ -66,8 +59,7 @@ export default new Router({
 					meta: {
 						title: '编辑图片'
 					},
-					component: () =>
-						import ('../components/ImageManage/EditImage')
+					component: () => import ('../components/ImageManage/EditImage')
 				},
 				{
 					path: '/membermanage',
@@ -75,8 +67,7 @@ export default new Router({
 					meta: {
 						title: '会员管理'
 					},
-					component: () =>
-						import ('../components/MemberManage')
+					component: () => import ('../components/MemberManage')
 				},
 				{
 					path: '/systemmanage',
@@ -84,8 +75,7 @@ export default new Router({
 					meta: {
 						title: '系统管理'
 					},
-					component: () =>
-						import ('../components/SystemManage'),
+					component: () => import ('../components/SystemManage'),
 					redirect: '/usermanage',
 					children: [
 						{
@@ -94,8 +84,7 @@ export default new Router({
 							meta: {
 								title: '用户管理'
 							},
-							component: () =>
-								import ('../components/SystemManage/UserManage')
+							component: () => import ('../components/SystemManage/UserManage')
 						},
 						{
 							path: '/adduser',
@@ -103,8 +92,7 @@ export default new Router({
 							meta: {
 								title: '添加用户'
 							},
-							component: () =>
-								import ('../components/SystemManage/UserManage/AddUser')
+							component: () => import ('../components/SystemManage/UserManage/AddUser')
 						},
 						{
 							path: '/edituser',
@@ -112,8 +100,7 @@ export default new Router({
 							meta: {
 								title: '编辑用户'
 							},
-							component: () =>
-								import ('../components/SystemManage/UserManage/EditUser')
+							component: () => import ('../components/SystemManage/UserManage/EditUser')
 						},
 						{
 							path: '/rolemanage',
@@ -121,8 +108,7 @@ export default new Router({
 							meta: {
 								title: '角色管理'
 							},
-							component: () =>
-								import ('../components/SystemManage/RoleManage')
+							component: () => import ('../components/SystemManage/RoleManage')
 						},
 						{
 							path: '/addrole',
@@ -130,8 +116,7 @@ export default new Router({
 							meta: {
 								title: '添加角色'
 							},
-							component: () =>
-								import ('../components/SystemManage/RoleManage/AddRole')
+							component: () => import ('../components/SystemManage/RoleManage/AddRole')
 						},
 						{
 							path: '/editrole',
@@ -139,8 +124,7 @@ export default new Router({
 							meta: {
 								title: '编辑角色'
 							},
-							component: () =>
-								import ('../components/SystemManage/RoleManage/EditRole')
+							component: () => import ('../components/SystemManage/RoleManage/EditRole')
 						},
 						{
 							path: '/dictmanage',
@@ -148,8 +132,7 @@ export default new Router({
 							meta: {
 								title: '字典管理'
 							},
-							component: () =>
-								import ('../components/SystemManage/DictManage')
+							component: () => import ('../components/SystemManage/DictManage')
 						},
 						{
 							path: '/menumanage',
@@ -157,8 +140,7 @@ export default new Router({
 							meta: {
 								title: '菜单管理'
 							},
-							component: () =>
-								import ('../components/SystemManage/MenuManage')
+							component: () => import ('../components/SystemManage/MenuManage')
 						}
 					]
 				},
