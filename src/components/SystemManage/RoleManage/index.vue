@@ -6,16 +6,17 @@
 					<el-input placeholder="角色名称"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click.native="getUsers">查询</el-button>
+					<el-button type="primary" @click.native="getList">查询</el-button>
 					<el-button type="default" @click.native="reset">重置</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
 		<div class="tableControl">
 			<el-button type="default" size="mini" icon="el-icon-plus" @click.native="add">添加</el-button>
+			<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>	
 		</div>
 		<div class="F-table">
-			<el-table :data="tableData" border style="width: 100%" size="small" stripe>
+			<el-table :data="roles" border style="width: 100%" size="small" stripe>
 				<el-table-column type="index" width="40" align="center">
 				</el-table-column>
 				<el-table-column prop="name" label="角色名称">
@@ -32,18 +33,12 @@
 				</el-table-column>
 				<el-table-column prop="remark" label="备注" align="center">
 				</el-table-column>
-				<el-table-column width="80" align="center" fixed="right">
+				<el-table-column width="110" align="center" fixed="right">
 					<template slot-scope="scope">
-						<el-dropdown  @command="handleCommand"  trigger="click">
-							<el-button type="primary" size="mini">操作<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item :command="{type: 'view', id:scope.row.Role_ID}">查看</el-dropdown-item>
-								<el-dropdown-item :command="{type: 'edit', id: scope.row.Role_ID}">编辑</el-dropdown-item>
-								<el-dropdown-item :command="{type: 'delete', id: scope.row.Role_ID}" >删除</el-dropdown-item>
-								<el-dropdown-item :command="{type: 'setAuth', id: scope.row.Role_ID}" >权限设置</el-dropdown-item>
-								<el-dropdown-item :command="{type: 'setUser', id: scope.row.Role_ID}" >分配用户</el-dropdown-item>
-							</el-dropdown-menu>
-						</el-dropdown>
+						<el-button type="default" size="mini" @click="edit(scope.row.Role_ID)">编辑</el-button>
+						<el-button type="default" size="mini" @click="deleteConfirm(scope.row.Role_ID)">删除</el-button>
+						<!-- <el-button type="default" size="mini" @click="setAuth(scope.row.Role_ID)">删除</el-button> -->
+						<!-- <el-button type="default" size="mini" @click="setUser(scope.row.Role_ID)">删除</el-button> -->
 					</template>
 				</el-table-column>
 			</el-table>
@@ -51,38 +46,92 @@
 	</div>
 </template>
 <script type="text/javascript">
+import request from '../../../common/request'
+import { Message } from 'element-ui'
 export default {
 	name: 'usermanage',
 	data() {
 		return {
-			tableData: [{
-				roleID:'65432132131',
-				date: '2016-05-02',
-				name: '管理员',
-				mobile: '13800138001',
-				Status: '封停'
-			}, {
-				roleID:'65432132131',
-				date: '2016-05-04',
-				name: '编辑',
-				mobile: '13800138002',
-				Status: '启用'
-			}]
+			selectedList:[],
+			roles: []
 		}
 	},
+	created() {
+		this.getList()
+	},
 	methods: {
-		handleCommand(e) {
-			if(e.type=='view'){
-				this.$router.push({name: 'viewrole', query: { Role_ID:e.id }})
-			}else if(e.type=='edit'){
-				this.$router.push({ name: 'editrole' , query: {  Role_ID:e.id } })
-			}else if(e.type=='setAuth'){
-				// this.setAuth(e)
-			}else if(e.type=='setUser'){
-				// this.setUser(e)
-			}else if(e.type=='delete'){
-				this.deleteConfirm(e.id)
+		add() {
+			this.$router.push({ name: 'addrole' })
+		},
+		edit(Role_ID) {
+			this.$router.push({ name: 'editrole' ,query: { Role_ID}})
+		},
+		getList() {
+			let params = {
+				pageIndex: this.pageIndex,
+				pageSize: this.pageSize
 			}
+			console.log(params)
+			request({
+				url: '/sys_role/list',
+				method: 'get',
+				params
+			}).then(res => {
+				if (res.data.code == 0) {
+					this.count = res.data.data.count
+					this.users = res.data.data.rows
+				} else {
+					Message.error(res.data.msg)
+				}
+			})
+		},
+		deleteConfirm(id) {
+			let ids = ''
+			if (id && typeof id == 'string') {
+				ids = id
+			} else {
+				if (this.selectedList.length == 0) {
+					this.$message({
+						type: 'warning',
+						message: '请选择'
+					})
+					return
+				}
+				ids = this.selectedList.join(',')
+			}
+			console.log(ids)
+			this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
+				this.delItem(ids)
+				this.$message({
+					type: 'success',
+					message: '删除成功!'
+				})
+			}).catch(() => {
+				this.$message({
+					type: 'info',
+					message: '已取消删除'
+				})
+			})
+		},
+		delItem(ids) {
+			let data = {
+				ids: ids
+			}
+			request({
+				url: '/sys_user/delete',
+				method: 'post',
+				data
+			}).then(res => {
+				if (res.data.code == 0) {
+					this.getList()
+				} else {
+					Message.error(res.data.msg)
+				}
+			})
 		}
 	}
 }

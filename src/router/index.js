@@ -97,14 +97,6 @@ export default new Router({
 					component: () => import('../components/SystemManage/UserManage/EditUser')
 				},
 				{
-					path: '/viewuser',
-					name: 'viewuser',
-					meta: {
-						title: '用户详情'
-					},
-					component: () => import('../components/SystemManage/UserManage/ViewUser')
-				},
-				{
 					path: '/rolemanage',
 					name: 'rolemanage',
 					meta: {
@@ -127,14 +119,6 @@ export default new Router({
 						title: '编辑角色'
 					},
 					component: () => import('../components/SystemManage/RoleManage/EditRole')
-				},
-				{
-					path: '/viewrole',
-					name: 'viewrole',
-					meta: {
-						title: '角色详情'
-					},
-					component: () => import('../components/SystemManage/RoleManage/ViewRole')
 				},
 				{
 					path: '/dictmanage',

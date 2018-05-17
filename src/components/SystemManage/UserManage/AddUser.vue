@@ -21,11 +21,11 @@
 					</el-col>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="密码">
-							<el-input auto-complete="off"></el-input>
+							<el-input auto-complete="off" v-model="user.password"></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
-						<el-form-item label="是否启用">
+						<el-form-item label="是否禁用">
 							<el-switch v-model="user.is_disabled"></el-switch>
 						</el-form-item>
 					</el-col>
@@ -57,7 +57,8 @@ export default {
 				mobile:'',
 				name: '',
 				mobile:'',
-				is_disabled:'true',
+				password:'',
+				is_disabled:true,
 				avatar:''
 			}
 			
