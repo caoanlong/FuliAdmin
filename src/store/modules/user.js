@@ -22,15 +22,10 @@ const user = {
 			const password = userInfo.password
 			return new Promise((resolve, reject) => {
 				login(mobile, password).then(response => {
-					const data = response.data
-					const token = response.headers['X-Access-Token']
-					commit('SET_NAME', data.name)
-					commit('SET_AVATAR', data.avatar)
+					const token = response.headers['x-access-token']
 					commit('SET_TOKEN', token)
-					localStorage.setItem('name', data.name)
-					localStorage.setItem('avatar', data.avatar)
 					localStorage.setItem('token', token)
-					resolve()
+					resolve(response)
 				}).catch(error => {
 					reject(error)
 				})

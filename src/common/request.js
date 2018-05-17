@@ -11,15 +11,14 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(config => {
-	// Do something before request is sent
-	// if (store.getters.token) {
-	// 	config.headers['X-Token'] = getToken() // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-	// }
-	// config.headers['Authorization'] = localStorage.getItem('token')
+	if (localStorage.getItem('token')) {
+		config.headers['X-Access-Token'] = localStorage.getItem('token')
+	}
 	config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 	if (config.data && config.headers['Content-Type'].includes('application/x-www-form-urlencoded')) {
     	config.data = qs.stringify(config.data)
 	}
+	console.log(config)
 	return config
 }, error => {
 	// Do something with request error
