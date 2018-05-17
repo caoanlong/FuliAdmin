@@ -39,7 +39,6 @@
 						<template slot-scope="scope">
 							<el-tag size="mini" type="info" v-if="scope.row.is_disabled">禁用</el-tag>
 							<el-tag size="mini" type="success" v-else>正常</el-tag>
-
 						</template>
 					</el-table-column>
 					<el-table-column prop="create_time" label="创建时间" align="center"  width="140">
@@ -185,12 +184,8 @@ export default {
 				method: 'post',
 				data
 			}).then(res => {
-				if (res.data.code == 0) {
-					this.getList()
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				this.getList()
+			}).catch(err => {})
 		}
 	}
 }

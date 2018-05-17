@@ -81,14 +81,9 @@
 							method: 'post',
 							data
 						}).then(res => {
-							if (res.data.code == 0) {
-								console.log(res.data)
-								Message.success(res.data.msg)
-								this.$router.push({name: 'dictmanage'})
-							} else {
-								Message.error(res.data.msg)
-							}
-						})
+							Message.success(res.data.msg)
+							this.$router.push({name: 'dictmanage'})
+						}).catch(err => {})
 					}
 				})
 			},

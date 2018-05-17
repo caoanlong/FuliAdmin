@@ -79,12 +79,8 @@
 					method: 'get',
 					params
 				}).then(res => {
-					if (res.data.code == 0) {
-						this.dict = res.data.data
-					} else {
-						Message.error(res.data.msg)
-					}
-				})
+					this.dict = res.data.data
+				}).catch(err => {})
 			},
 			editDict() {
 				let data= {
@@ -101,14 +97,10 @@
 							url: '/sys_dict/update',
 							method: 'post',
 							data
-						}).then(res => {
-							if (res.data.code == 0) {
-								Message.success(res.data.msg)
-								this.$router.push({name: 'dictmanage'})
-							} else {
-								Message.error(res.data.msg)
-							}
-						})
+						}).then(res => {		
+							Message.success(res.data.msg)
+							this.$router.push({name: 'dictmanage'})					
+						}).catch(err => {})
 					}
 				})
 			},

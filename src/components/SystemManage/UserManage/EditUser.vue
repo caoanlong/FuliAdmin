@@ -79,12 +79,8 @@ export default {
 				method: 'get',
 				params
 			}).then(res => {
-				if (res.data.code == 0) {
-					this.user = res.data.data
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				this.user = res.data.data
+			}).catch(err => {})
 		},
 		getRoleList() {
 			let params = {
@@ -95,18 +91,14 @@ export default {
 				method: 'get',
 				params
 			}).then(res => {
-				if (res.data.code == 0) {
-					let Oroles = res.data.data.rows
-					this.roles = Oroles.map(item => {
-						return {
-							role_id: item.role_id,
-							name: item.name
-						}
-					})
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				let Oroles = res.data.data.rows
+				this.roles = Oroles.map(item => {
+					return {
+						role_id: item.role_id,
+						name: item.name
+					}
+				})
+			}).catch(err => {})
 		},
 		handleAvatarSuccess(res) {
 			this.user.avatar = res[0]
@@ -118,13 +110,9 @@ export default {
 				method: 'post',
 				data
 			}).then(res => {
-				if (res.data.code == 0) {
-					Message.success(res.data.msg)
-					this.$router.push({ name: 'usermanage' })
-				} else {
-					Message.error(res.data.msg)
-				}
-			})
+				Message.success(res.data.msg)
+				this.$router.push({ name: 'usermanage' })
+			}).catch(err => {})
 		},
 		back() {
 			this.$router.go(-1)
