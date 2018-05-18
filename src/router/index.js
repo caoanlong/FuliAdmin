@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
 	scrollBehavior: () => ({ y: 0 }),
 	routes: [{
 			path: '*',
@@ -144,8 +144,10 @@ export default new Router({
 							component: () => import ('../components/SystemManage/MenuManage')
 						}
 					]
-				},
+				}
 			]
-		},
+		}
 	]
 })
+
+export default router

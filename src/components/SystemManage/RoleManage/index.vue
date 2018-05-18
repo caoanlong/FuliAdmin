@@ -20,19 +20,19 @@
 				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
 				<el-table-column prop="name" label="角色名称">
 				</el-table-column>
-				<el-table-column prop="create_time" label="创建时间" align="center" width="140">
+				<el-table-column label="创建时间" align="center" width="140">
 					<template slot-scope="scope">
-						<span v-if="scope.row.create_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+						<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
 					</template>
 				</el-table-column>
-				<el-table-column prop="create_user_id" label="创建人" align="center">
+				<el-table-column prop="create_user.name" label="创建人" align="center">
 				</el-table-column>
-				<el-table-column prop="update_time" label="更新时间" align="center" width="140">
+				<el-table-column label="更新时间" align="center" width="140">
 					<template slot-scope="scope">
 						<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
 					</template>
 				</el-table-column>
-				<el-table-column prop="update_user_id" label="更新人" align="center">
+				<el-table-column prop="update_user.name" label="更新人" align="center">
 				</el-table-column>
 				<el-table-column width="250" align="center" fixed="right">
 					<template slot-scope="scope">

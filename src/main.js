@@ -15,7 +15,9 @@ import store from './store'
 // global filters
 import * as filters from './filters'
 
-import './assets/icons' // icon
+import './assets/icons'
+// permission control 判断是否登录
+import { permissions } from './permission'
 import globals from '../src/common/global'
 
 // register global utility filters.

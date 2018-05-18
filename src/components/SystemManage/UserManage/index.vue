@@ -1,87 +1,84 @@
 <template>
 	<div class="main-content">
-		<div class="fl-card box-card">
-			<div class="header clearfix">用户列表</div>
-			<div class="search">
-				<el-form :inline="true" class="demo-form-inline" size="small">
-					<el-form-item label="姓名">
-						<el-input placeholder="姓名" v-model="findName"></el-input>
-					</el-form-item>
-					<el-form-item label="手机号码">
-						<el-input placeholder="手机号码" v-model="findMobile"></el-input>
-					</el-form-item>
-					<el-form-item label="状态">
-						<el-select placeholder="请选择" v-model="findStatus" >
-							<el-option label="正常" :value="false"></el-option>
-							<el-option label="禁用" :value="true"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item>
-						<el-button type="primary" @click.native="getList">查询</el-button>
-						<el-button type="default" @click.native="reset">重置</el-button>
-					</el-form-item>
-				</el-form>
-			</div>
-			<div class="tableControl">
-				<el-button type="default" size="mini" icon="el-icon-plus" @click.native="add">添加</el-button>
-				<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>
-			</div>
-			<div class="F-table">
-				<el-table :data="users" @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
-					<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
-					<el-table-column prop="name" label="姓名">
-					</el-table-column>
-					<el-table-column prop="mobile" label="电话" align="center" width="100">
-					</el-table-column>
-					<el-table-column prop="sys_role.name" label="角色权限" align="center">
-					</el-table-column>
-					<el-table-column prop="is_disabled" label="状态" align="center" width="60">
-						<template slot-scope="scope">
-							<el-tag size="mini" type="info" v-if="scope.row.is_disabled">禁用</el-tag>
-							<el-tag size="mini" type="success" v-else>正常</el-tag>
-						</template>
-					</el-table-column>
-					<el-table-column prop="create_time" label="创建时间" align="center"  width="140">
-						<template slot-scope="scope">
-							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="create_user_id" label="创建人" align="center">
-					</el-table-column>
-					<el-table-column prop="update_time" label="更新时间" align="center" width="140">
-						<template slot-scope="scope">
-							<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="update_user_id" label="更新人" align="center">
-					</el-table-column>
-					<el-table-column width="110" align="center" fixed="right">
-						<template slot-scope="scope">
-							<el-button type="primary" size="mini" @click="edit(scope.row.user_id)">编辑</el-button>
-							<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.user_id)">删除</el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-				<el-row type="flex">
-					<el-col :span="12" style="padding-top: 15px; font-size: 12px; color: #909399">
-						<span>总共 {{count}} 条记录每页显示</span>
-						<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getList()">
-							<el-option label="10" :value="10"></el-option>
-							<el-option label="20" :value="20"></el-option>
-							<el-option label="30" :value="30"></el-option>
-							<el-option label="40" :value="40"></el-option>
-							<el-option label="50" :value="50"></el-option>
-							<el-option label="100" :value="100"></el-option>
-						</el-select>
-						<span>条记录</span>
-					</el-col>
-					<el-col :span="12">
-						<div class="pagination">
-							<el-pagination :page-size="pageSize" align="right" background layout="prev, pager, next" :total="count" @current-change="pageChange"></el-pagination>
-						</div>
-					</el-col>
-				</el-row>
-			</div>
+		<div class="search">
+			<el-form :inline="true" class="demo-form-inline" size="small">
+				<el-form-item label="姓名">
+					<el-input placeholder="姓名" v-model="findName"></el-input>
+				</el-form-item>
+				<el-form-item label="手机号码">
+					<el-input placeholder="手机号码" v-model="findMobile"></el-input>
+				</el-form-item>
+				<el-form-item label="状态">
+					<el-select placeholder="请选择" v-model="findStatus" >
+						<el-option label="正常" :value="false"></el-option>
+						<el-option label="禁用" :value="true"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click.native="getList">查询</el-button>
+					<el-button type="default" @click.native="reset">重置</el-button>
+				</el-form-item>
+			</el-form>
+		</div>
+		<div class="tableControl">
+			<el-button type="default" size="mini" icon="el-icon-plus" @click.native="add">添加</el-button>
+			<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>
+		</div>
+		<div class="F-table">
+			<el-table :data="users" @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
+				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
+				<el-table-column prop="name" label="姓名">
+				</el-table-column>
+				<el-table-column prop="mobile" label="电话" align="center" width="100">
+				</el-table-column>
+				<el-table-column prop="sys_role.name" label="角色权限" align="center">
+				</el-table-column>
+				<el-table-column prop="is_disabled" label="状态" align="center" width="60">
+					<template slot-scope="scope">
+						<el-tag size="mini" type="info" v-if="scope.row.is_disabled">禁用</el-tag>
+						<el-tag size="mini" type="success" v-else>正常</el-tag>
+					</template>
+				</el-table-column>
+				<el-table-column prop="create_time" label="创建时间" align="center"  width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="create_user.name" label="创建人" align="center">
+				</el-table-column>
+				<el-table-column prop="update_time" label="更新时间" align="center" width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="update_user.name" label="更新人" align="center">
+				</el-table-column>
+				<el-table-column width="110" align="center" fixed="right">
+					<template slot-scope="scope">
+						<el-button type="primary" size="mini" @click="edit(scope.row.user_id)">编辑</el-button>
+						<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.user_id)">删除</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-row type="flex">
+				<el-col :span="12" style="padding-top: 15px; font-size: 12px; color: #909399">
+					<span>总共 {{count}} 条记录每页显示</span>
+					<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getList()">
+						<el-option label="10" :value="10"></el-option>
+						<el-option label="20" :value="20"></el-option>
+						<el-option label="30" :value="30"></el-option>
+						<el-option label="40" :value="40"></el-option>
+						<el-option label="50" :value="50"></el-option>
+						<el-option label="100" :value="100"></el-option>
+					</el-select>
+					<span>条记录</span>
+				</el-col>
+				<el-col :span="12">
+					<div class="pagination">
+						<el-pagination :page-size="pageSize" align="right" background layout="prev, pager, next" :total="count" @current-change="pageChange"></el-pagination>
+					</div>
+				</el-col>
+			</el-row>
 		</div>
 	</div>
 </template>

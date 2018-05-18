@@ -39,7 +39,7 @@
 					],
 					password: [
 						{ required: true, message: '密码不能为空' },
-						{ min: 5, max: 20, message: '长度在 5 到 20 个字符' }
+						{ min: 3, max: 20, message: '长度在 3 到 20 个字符' }
 					]
 				},
 				passwordType: 'password',
