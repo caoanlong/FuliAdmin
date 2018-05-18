@@ -143,7 +143,7 @@ export default {
 		deleteConfirm(id) {
 			let ids = ''
 			if (id && typeof id == 'string') {
-				ids = id
+				ids = [id]
 			} else {
 				if (this.selectedList.length == 0) {
 					this.$message({
@@ -152,9 +152,8 @@ export default {
 					})
 					return
 				}
-				ids = this.selectedList.join(',')
+				ids = this.selectedList
 			}
-			console.log(ids)
 			this.$confirm('此操作将永久删除, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
