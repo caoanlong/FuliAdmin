@@ -33,7 +33,7 @@ const user = {
 				})
 			})
 		},
-		logOut({ commit, state }) {
+		logout({ commit, state }) {
 			return new Promise((resolve, reject) => {
 				logout().then(() => {
 					commit('SET_NAME', '')
