@@ -59,8 +59,8 @@
 				this.$refs.loginForm.validate(valid => {
 					if (valid) {
 						this.loading = true
-						this.$store.dispatch('Login', this.loginForm).then(() => {
-							this.$store.dispatch('GetUserInfo')
+						this.$store.dispatch('login', this.loginForm).then(() => {
+							this.$store.dispatch('getUserInfo')
 							this.loading = false
 							Message.success('登录成功')
 							this.$router.push({ path: '/' })

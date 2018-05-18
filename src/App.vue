@@ -9,8 +9,8 @@ export default {
 	name: 'App',
 	created() {
 		if (localStorage.getItem('token')) {
-			this.$store.dispatch('GetUserInfo')
-			// this.$store.dispatch('getMenu')
+			this.$store.dispatch('getUserInfo')
+			this.$store.dispatch('getMenu')
 		}
 	}
 }

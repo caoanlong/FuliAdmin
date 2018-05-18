@@ -1,4 +1,4 @@
-import { login, getUserInfo, logout } from '../../api/login'
+import { login, getUser, logout } from '../../api/login'
 const user = {
 	state: {
 		name: '',
@@ -20,7 +20,7 @@ const user = {
 		}
 	},
 	actions: {
-		Login ({ commit }, userInfo) {
+		login ({ commit }, userInfo) {
 			const mobile = userInfo.mobile.trim()
 			const password = userInfo.password
 			return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ const user = {
 				})
 			})
 		},
-		LogOut({ commit, state }) {
+		logOut({ commit, state }) {
 			return new Promise((resolve, reject) => {
 				logout().then(() => {
 					commit('SET_NAME', '')
@@ -46,9 +46,9 @@ const user = {
 				})
 			})
 		},
-		GetUserInfo({ commit } ) {
+		getUserInfo({ commit } ) {
 			return new Promise((resolve, reject) => {
-				getUserInfo().then(response => {
+				getUser().then(response => {
 					const data = response.data.data
 					commit('SET_NAME', data.name)
 					commit('SET_AVATAR', data.avatar)
