@@ -1,23 +1,15 @@
 <template>
 	<div class="main-content">
-		<div class="fl-card menu-list">
-			<div class="header clearfix">菜单列表</div>
+		<el-card class="menu-list">
+			<div slot="header">菜单列表</div>
 			<div class="tableControl">
 				<el-button type="success" plain size="mini" icon="el-icon-plus" @click="addRoot">添加顶级节点</el-button>
 			</div>
-			<el-tree
-				class="expand-tree"
-				:data="menus"
-				:props="defaultProps"
-				node-key="name"
-				highlight-current
-				:expand-on-click-node="false"
-				:render-content="renderContent"
-				@node-click="handleNodeClick">
+			<el-tree class="expand-tree" :data="menus" :props="defaultProps" node-key="name" highlight-current :expand-on-click-node="false" :render-content="renderContent" @node-click="handleNodeClick">
 			</el-tree>
-		</div>
-		<div class="fl-card menu-info">
-			<div class="header clearfix">菜单详情</div>
+		</el-card>
+		<el-card class="menu-info">
+			<div slot="header">菜单详情</div>
 			<el-form ref="form" :model="currentNode" label-width="80px">
 				<el-form-item label="标题">
 					<el-input v-model="currentNode.Name"></el-input>
@@ -30,7 +22,7 @@
 				</el-form-item>
 				<el-form-item label="图标">
 					<el-button type="primary" plain @click="selectIcondialog = true">
-						<svg-icon :iconClass="currentNode.Icon ? currentNode.Icon : 'add-icon'"></svg-icon> 
+						<svg-icon :iconClass="currentNode.Icon ? currentNode.Icon : 'add-icon'"></svg-icon>
 						{{currentNode.Icon ? currentNode.Icon : iconTxt}}
 					</el-button>
 				</el-form-item>
@@ -51,7 +43,7 @@
 					<el-button>取消</el-button>
 				</el-form-item>
 			</el-form>
-		</div>
+		</el-card>
 		<el-dialog title="选择图标" :visible.sync="selectIcondialog" width="30%">
 			<ul class="iconList clearfix">
 				<li v-for="icon in svgicons" :key="icon" :class="{'selected':selectedIcon == icon}" @click="selectIcon(icon)">
@@ -120,14 +112,14 @@ export default {
 				IsShow: '',
 				sys_roles: []
 			}
-			this.iconTxt='添加图标'
+			this.iconTxt = '添加图标'
 		},
 		handleNodeClick(d) {
 			this.title = '编辑'
 			this.button = '确认修改'
 			this.getMenu(d.Menu_ID)
 		},
-		renderContent(h, {node, data, store}) {
+		renderContent(h, { node, data, store }) {
 			let that = this //指向vue
 			return h(TreeRender, {
 				props: {
@@ -136,13 +128,13 @@ export default {
 					STORE: store, //完整树形内容
 					CURRENTNODE: this.currentNode // 当前选择的节点
 				},
-				on: {//绑定方法
+				on: { //绑定方法
 					nodeAdd: ((s, d, n) => that.handleAdd(s, d, n)),
 					nodeDel: ((s, d, n) => that.handleDelete(s, d, n))
 				}
 			})
 		},
-		handleAdd(s, d, n){//增加节点
+		handleAdd(s, d, n) { //增加节点
 			this.title = '添加子节点'
 			this.button = '立即创建'
 			this.currentNode = {
@@ -155,9 +147,9 @@ export default {
 				IsShow: '',
 				sys_roles: []
 			}
-			this.iconTxt='添加图标'
+			this.iconTxt = '添加图标'
 		},
-		handleDelete(s, d, n){//删除节点
+		handleDelete(s, d, n) { //删除节点
 			this.$confirm('此操作将永久删除该节点, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
@@ -174,7 +166,7 @@ export default {
 				this.$message({
 					type: 'info',
 					message: '已取消删除'
-				})         
+				})
 			})
 		},
 		submitForm(type) {
@@ -206,7 +198,7 @@ export default {
 				this.$store.dispatch('getMenu')
 				this.addRoot()
 				this.$message.success('创建成功！')
-			// 编辑
+				// 编辑
 			} else {
 				let params = {
 					Menu_ID: this.currentNode.Menu_ID,
@@ -226,7 +218,7 @@ export default {
 			}
 		},
 		selectIcon(icon) {
-			this.selectedIcon= icon
+			this.selectedIcon = icon
 		},
 		submitSelect() {
 			this.iconTxt = this.currentNode.Icon = this.selectedIcon
@@ -273,17 +265,16 @@ export default {
 <style lang="stylus" scoped>
 	.main-content
 		display flex
-		.fl-card
-			&.menu-list
-				flex 0 0 360px
-				margin-right 20px
-				.expand-tree
-					height 600px
-					overflow-y auto
-			&.menu-info
-				flex 1
+		.menu-list
+			flex 0 0 360px
+			margin-right 20px
 			.expand-tree
-				font-size 14px
+				height 600px
+				overflow-y auto
+		.menu-info
+			flex 1
+		.expand-tree
+			font-size 14px
 	.svg-icon
 		vertical-align top
 	.iconList
@@ -304,4 +295,5 @@ export default {
 				color #409EFF
 	.el-checkbox
 		margin 0 30px 0 0	
+
 </style>

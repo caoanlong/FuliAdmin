@@ -1,12 +1,12 @@
 <template>
 	<div class="main-content">
-		<div class="fl-card box-card">
-			<div class="header clearfix">添加用户</div>
+		<el-card class="box-card">
+			<div slot="header">添加用户</div>
 			<el-form label-width="120px">
 				<el-row>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="头像">
-							<ImageUpload :files="[user.avatar]" @imgUrlBack="handleAvatarSuccess" :fixed="true"/>
+							<ImageUpload :files="[user.avatar]" @imgUrlBack="handleAvatarSuccess" :fixed="true" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
@@ -45,7 +45,7 @@
 					</el-col>
 				</el-row>
 			</el-form>
-		</div>
+		</el-card>
 	</div>
 </template>
 <script type="text/javascript">
@@ -53,25 +53,25 @@ import request from '../../../common/request'
 import { Message } from 'element-ui'
 import ImageUpload from '../../CommonComponents/ImageUpload'
 export default {
-	data(){
-		return{
+	data() {
+		return {
 			user: {
-				mobile:'',
+				mobile: '',
 				name: '',
-				mobile:'',
-				password:'',
-				is_disabled:true,
-				role_id:'',
-				avatar:''
+				mobile: '',
+				password: '',
+				is_disabled: true,
+				role_id: '',
+				avatar: ''
 			},
-			roles:[]
+			roles: []
 		}
 	},
-	created(){
+	created() {
 		this.getRoleList()
 	},
-	methods:{
-		addUser(){
+	methods: {
+		addUser() {
 			let data = this.user
 			console.log(data)
 			request({
