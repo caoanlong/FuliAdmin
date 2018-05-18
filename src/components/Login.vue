@@ -24,6 +24,7 @@
 	</div>
 </template>
 <script type="text/javascript">
+	import { Message } from 'element-ui'
 	import { checkMobile } from '../common/validator'
 	export default {
 		data () {
@@ -59,7 +60,9 @@
 					if (valid) {
 						this.loading = true
 						this.$store.dispatch('Login', this.loginForm).then(() => {
+							this.$store.dispatch('GetUserInfo')
 							this.loading = false
+							Message.success('登录成功')
 							this.$router.push({ path: '/' })
 						}).catch((err) => {
 							console.log(err)

@@ -20,7 +20,7 @@ export function logout() {
 
 export function getUserInfo() {
 	return request({
-		url: '/user/info',
+		url: '/auth/userInfo',
 		method: 'get'
 	})
 }

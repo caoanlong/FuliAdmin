@@ -8,12 +8,15 @@ const user = {
 	mutations: {
 		SET_NAME: (state, name) => {
 			state.name = name
+			localStorage.setItem('name', name)
 		},
 		SET_TOKEN: (state, token) => {
 			state.token = token
+			localStorage.setItem('token', token)
 		},
 		SET_AVATAR: (state, avatar) => {
 			state.avatar = avatar
+			localStorage.setItem('avatar', avatar)
 		}
 	},
 	actions: {
@@ -24,7 +27,6 @@ const user = {
 				login(mobile, password).then(response => {
 					const token = response.headers['x-access-token']
 					commit('SET_TOKEN', token)
-					localStorage.setItem('token', token)
 					resolve(response)
 				}).catch(error => {
 					reject(error)
@@ -33,7 +35,7 @@ const user = {
 		},
 		LogOut({ commit, state }) {
 			return new Promise((resolve, reject) => {
-				logout(state.token).then(() => {
+				logout().then(() => {
 					commit('SET_NAME', '')
 					commit('SET_AVATAR', '')
 					commit('SET_TOKEN', '')
@@ -44,17 +46,16 @@ const user = {
 				})
 			})
 		},
-		GetUserInfo({ commit }, token) {
+		GetUserInfo({ commit } ) {
 			return new Promise((resolve, reject) => {
-				// getUserInfo(token).then(response => {
-				// 	const data = response.data
-				// 	commit('SET_NAME', data.username)
-				// 	commit('SET_ROLES', data.roles)
-				// 	commit('SET_AVATAR', data.avatar)
-				// 	resolve(data)
-				// }).catch(error => {
-				// 	reject(error)
-				// })
+				getUserInfo().then(response => {
+					const data = response.data.data
+					commit('SET_NAME', data.name)
+					commit('SET_AVATAR', data.avatar)
+					resolve()
+				}).catch(error => {
+					reject(error)
+				})
 			})
 		}
 	}
