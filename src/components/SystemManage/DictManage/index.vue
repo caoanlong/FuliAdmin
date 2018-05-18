@@ -1,63 +1,60 @@
 <template>
 	<div class="main-content">
-		<div class="fl-card box-card">
-			<div class="header clearfix">字典列表</div>
-			<div class="search">
-				<el-form :inline="true" class="demo-form-inline" size="small">
-					<el-form-item label="类型">
-						<el-select placeholder="请选择" value="">
-							<el-option label="启用" value="启用"></el-option>
-							<el-option label="禁用" value="禁用"></el-option>	
-						</el-select>
-					</el-form-item>
-					<el-form-item label="描述">
-						<el-input placeholder="描述"></el-input>
-					</el-form-item>
-					<el-form-item>
-						<el-button type="primary" @click="getList()">查询</el-button>
-						<el-button type="default" @click="reset">重置</el-button>
-					</el-form-item>
-				</el-form>
-			</div>
-			<div class="tableControl">
-				<el-button type="default" size="mini" icon="el-icon-plus" @click="add">添加</el-button>
-				<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>
-			</div>
-			<div class="F-table">
-				<el-table :data="dicts"  @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
-					<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
-					<el-table-column label="键值" prop="demo"></el-table-column>
-					<el-table-column label="标签" prop="demo"></el-table-column>
-					<el-table-column label="类型" prop="demo"></el-table-column>
-					<el-table-column label="描述" prop="demo"></el-table-column>
-					<el-table-column label="排序" prop="sort" align="center" width="60"></el-table-column>
-					<el-table-column width="110" align="center" fixed="right">
-						<template slot-scope="scope">
-							<el-button type="primary" size="mini" @click="edit(scope.row.dict_id)">编辑</el-button>
-							<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.dict_id)">删除</el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-				<el-row type="flex">
-					<el-col :span="12" style="padding-top: 15px; font-size: 12px; color: #909399">
-						<span>总共 {{count}} 条记录每页显示</span>
-						<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getList()">
-							<el-option label="10" :value="10"></el-option>
-							<el-option label="20" :value="20"></el-option>
-							<el-option label="30" :value="30"></el-option>
-							<el-option label="40" :value="40"></el-option>
-							<el-option label="50" :value="50"></el-option>
-							<el-option label="100" :value="100"></el-option>
-						</el-select>
-						<span>条记录</span>
-					</el-col>
-					<el-col :span="12">
-						<div class="pagination">
-							<el-pagination :page-size="pageSize" align="right" background layout="prev, pager, next" :total="count" @current-change="pageChange"></el-pagination>
-						</div>
-					</el-col>
-				</el-row>
-			</div>
+		<div class="search">
+			<el-form :inline="true" class="demo-form-inline" size="small">
+				<el-form-item label="类型">
+					<el-select placeholder="请选择" value="">
+						<el-option label="启用" value="启用"></el-option>
+						<el-option label="禁用" value="禁用"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="描述">
+					<el-input placeholder="描述"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="getList()">查询</el-button>
+					<el-button type="default" @click="reset">重置</el-button>
+				</el-form-item>
+			</el-form>
+		</div>
+		<div class="tableControl">
+			<el-button type="default" size="mini" icon="el-icon-plus" @click="add">添加</el-button>
+			<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>
+		</div>
+		<div class="F-table">
+			<el-table :data="dicts" @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
+				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
+				<el-table-column label="键值" prop="demo"></el-table-column>
+				<el-table-column label="标签" prop="demo"></el-table-column>
+				<el-table-column label="类型" prop="demo"></el-table-column>
+				<el-table-column label="描述" prop="demo"></el-table-column>
+				<el-table-column label="排序" prop="sort" align="center" width="60"></el-table-column>
+				<el-table-column width="110" align="center" fixed="right">
+					<template slot-scope="scope">
+						<el-button type="primary" size="mini" @click="edit(scope.row.dict_id)">编辑</el-button>
+						<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.dict_id)">删除</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-row type="flex">
+				<el-col :span="12" style="padding-top: 15px; font-size: 12px; color: #909399">
+					<span>总共 {{count}} 条记录每页显示</span>
+					<el-select size="mini" style="width: 90px; padding: 0 5px" v-model="pageSize" @change="getList()">
+						<el-option label="10" :value="10"></el-option>
+						<el-option label="20" :value="20"></el-option>
+						<el-option label="30" :value="30"></el-option>
+						<el-option label="40" :value="40"></el-option>
+						<el-option label="50" :value="50"></el-option>
+						<el-option label="100" :value="100"></el-option>
+					</el-select>
+					<span>条记录</span>
+				</el-col>
+				<el-col :span="12">
+					<div class="pagination">
+						<el-pagination :page-size="pageSize" align="right" background layout="prev, pager, next" :total="count" @current-change="pageChange"></el-pagination>
+					</div>
+				</el-col>
+			</el-row>
 		</div>
 	</div>
 </template>
@@ -67,11 +64,11 @@ import { Message } from 'element-ui'
 export default {
 	data() {
 		return {
-			count:0,
+			count: 0,
 			pageIndex: 1,
 			pageSize: 10,
-			dicts:[],
-			selectedList:[]
+			dicts: [],
+			selectedList: []
 		}
 	},
 	created() {
@@ -95,14 +92,14 @@ export default {
 				this.users = res.data.data.rows
 			}).catch(err => {})
 		},
-		add(){},
-		reset(){},
+		add() {},
+		reset() {},
 		handleCommand(e) {
-			if(e.type=='view'){
-				this.$router.push({name: 'viewdict', query: { dictID:e.id }})
-			}else if(e.type=='edit'){
-				this.$router.push({ name: 'editdict' , query: {  dictID:e.id } })
-			}else if(e.type=='delete'){
+			if (e.type == 'view') {
+				this.$router.push({ name: 'viewdict', query: { dictID: e.id } })
+			} else if (e.type == 'edit') {
+				this.$router.push({ name: 'editdict', query: { dictID: e.id } })
+			} else if (e.type == 'delete') {
 				this.deleteConfirm(e.id)
 			}
 		},
@@ -139,7 +136,7 @@ export default {
 		},
 		selectionChange(data) {
 			this.selectedList = data.map(item => item.dict_id)
-			console.log(this.selectedList )
+			console.log(this.selectedList)
 		},
 		delDict(ids) {
 			let data = {
@@ -153,10 +150,10 @@ export default {
 				this.getDict()
 			}).catch(err => {})
 		},
-		
+
 	},
 	components: {
-		
+
 	}
 }
 
@@ -180,4 +177,5 @@ export default {
 	&:active
 		border-color #3a8ee6
 		color #3a8ee6
+
 </style>

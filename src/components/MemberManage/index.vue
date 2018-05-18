@@ -1,7 +1,7 @@
 <template>
 	<div class="main-content">
-		<div class="fl-card box-card">
-			<div class="header clearfix">会员列表</div>
+		<el-card class="box-card">
+			<div slot="header">会员列表</div>
 			<div class="search">
 				<el-form :inline="true" class="demo-form-inline" size="small">
 					<el-form-item label="手机号码">
@@ -75,7 +75,7 @@
 					</div>
 				</el-col>
 			</el-row>
-		</div>
+		</el-card>
 	</div>
 </template>
 <script type="text/javascript">

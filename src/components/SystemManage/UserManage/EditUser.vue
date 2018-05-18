@@ -1,12 +1,12 @@
 <template>
 	<div class="main-content">
-		<div class="fl-card box-card">
-			<div class="header clearfix">编辑用户</div>
+		<el-card class="box-card">
+			<div slot="header">编辑用户</div>
 			<el-form label-width="120px">
 				<el-row>
 					<el-col :span="10" :offset="6">
 						<el-form-item label="头像">
-							<ImageUpload :files="[user.avatar]" @imgUrlBack="handleAvatarSuccess" :fixed="true"/>
+							<ImageUpload :files="[user.avatar]" @imgUrlBack="handleAvatarSuccess" :fixed="true" />
 						</el-form-item>
 					</el-col>
 					<el-col :span="10" :offset="6">
@@ -45,7 +45,7 @@
 					</el-col>
 				</el-row>
 			</el-form>
-		</div>
+		</el-card>
 	</div>
 </template>
 <script type="text/javascript">
@@ -53,24 +53,24 @@ import request from '../../../common/request'
 import { Message } from 'element-ui'
 import ImageUpload from '../../CommonComponents/ImageUpload'
 export default {
-	data(){
-		return{
+	data() {
+		return {
 			user: {
-				name:'',
-				mobile:'',
-				password:'',
-				is_disabled:'',
+				name: '',
+				mobile: '',
+				password: '',
+				is_disabled: '',
 				role_id: '',
 			},
-			roles:[]
+			roles: []
 		}
 	},
 	created() {
 		this.getInfo()
 		this.getRoleList()
 	},
-	methods:{
-		getInfo(){
+	methods: {
+		getInfo() {
 			let params = {
 				user_id: this.$route.query.user_id
 			}
@@ -103,7 +103,7 @@ export default {
 		handleAvatarSuccess(res) {
 			this.user.avatar = res[0]
 		},
-		editUser(){
+		editUser() {
 			let data = this.user
 			request({
 				url: '/sys_user/update',
