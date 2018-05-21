@@ -12,28 +12,28 @@
 			<div slot="header">菜单详情</div>
 			<el-form ref="form" :model="currentNode" label-width="80px">
 				<el-form-item label="标题">
-					<el-input v-model="currentNode.Name"></el-input>
+					<el-input v-model="currentNode.name"></el-input>
 				</el-form-item>
 				<el-form-item label="名字">
-					<el-input v-model="currentNode.Target"></el-input>
+					<el-input v-model="currentNode.route_name"></el-input>
 				</el-form-item>
 				<el-form-item label="路径">
-					<el-input v-model="currentNode.Href"></el-input>
+					<el-input v-model="currentNode.path"></el-input>
 				</el-form-item>
 				<el-form-item label="图标">
 					<el-button type="primary" plain @click="selectIcondialog = true">
-						<svg-icon :iconClass="currentNode.Icon ? currentNode.Icon : 'add-icon'"></svg-icon>
-						{{currentNode.Icon ? currentNode.Icon : iconTxt}}
+						<svg-icon :iconClass="currentNode.icon ? currentNode.icon : 'add-icon'"></svg-icon>
+						{{currentNode.icon ? currentNode.icon : iconTxt}}
 					</el-button>
 				</el-form-item>
 				<el-form-item label="排序">
-					<el-input-number v-model="currentNode.SortNumber" :min="1"></el-input-number>
+					<el-input-number v-model="currentNode.sort" :min="1"></el-input-number>
 				</el-form-item>
 				<el-form-item label="是否显示">
-					<el-switch v-model="isShow"></el-switch>
+					<el-switch v-model="currentNode.is_show"></el-switch>
 				</el-form-item>
 				<el-form-item label="角色权限">
-					<el-select style="width: 100%" v-model="selectedRoles" placeholder="请选择">
+					<el-select style="width: 100%" multiple v-model="currentNode.sys_roles" placeholder="请选择">
 						<el-option v-for="item in roles" :key="item.role_id" :label="item.name" :value="item.role_id">
 						</el-option>
 					</el-select>
@@ -74,15 +74,14 @@ export default {
 				label: 'title'
 			},
 			currentNode: {
-				Target: '', // name
-				Name: '', // title
-				SortNumber: '',
-				Href: '', // path
-				Icon: '',
-				IsShow: '',
+				route_name: '',
+				name: '',
+				sort: '',
+				path: '',
+				icon: '',
+				is_show: true,
 				sys_roles: []
 			},
-			isShow: false,
 			title: '添加顶级节点',
 			button: '立即创建',
 			selectIcondialog: false,
@@ -104,12 +103,12 @@ export default {
 			this.title = '添加顶级节点'
 			this.button = '立即创建'
 			this.currentNode = {
-				Target: '',
-				Name: '',
-				SortNumber: '',
-				Href: '',
-				Icon: '',
-				IsShow: '',
+				route_name: '',
+				name: '',
+				sort: '',
+				path: '',
+				icon: '',
+				is_show: true,
 				sys_roles: []
 			}
 			this.iconTxt = '添加图标'
@@ -117,7 +116,7 @@ export default {
 		handleNodeClick(d) {
 			this.title = '编辑'
 			this.button = '确认修改'
-			this.getMenu(d.Menu_ID)
+			this.getMenu(d.menu_id)
 		},
 		renderContent(h, { node, data, store }) {
 			let that = this //指向vue
@@ -138,13 +137,13 @@ export default {
 			this.title = '添加子节点'
 			this.button = '立即创建'
 			this.currentNode = {
-				Menu_PID: this.currentNode.Menu_ID,
-				Target: '',
-				Name: '',
-				SortNumber: '',
-				Href: '',
-				Icon: '',
-				IsShow: '',
+				menu_pid: this.currentNode.menu_id,
+				route_name: '',
+				name: '',
+				sort: '',
+				path: '',
+				icon: '',
+				is_show: true,
 				sys_roles: []
 			}
 			this.iconTxt = '添加图标'
@@ -170,47 +169,16 @@ export default {
 			})
 		},
 		submitForm(type) {
-			if (!this.currentNode.Name) {
-				this.$message.error('标题不能为空！')
-				return
-			}
-			if (!this.currentNode.Target) {
-				this.$message.error('名字不能为空！')
-				return
-			}
-			if (!this.currentNode.Href) {
-				this.$message.error('路径不能为空！')
-				return
-			}
 			// 创建
 			if (type == '立即创建') {
-				let params = {
-					Href: this.currentNode.Href,
-					Target: this.currentNode.Target,
-					Name: this.currentNode.Name,
-					SortNumber: this.currentNode.SortNumber,
-					Icon: this.currentNode.Icon,
-					Menu_PID: this.currentNode.Menu_PID,
-					IsShow: this.isShow ? 'Y' : 'N',
-					sys_roles: this.selectedRoles
-				}
+				let params = this.currentNode
 				this.$store.dispatch('addMenu', params)
 				this.$store.dispatch('getMenu')
 				this.addRoot()
 				this.$message.success('创建成功！')
 				// 编辑
 			} else {
-				let params = {
-					Menu_ID: this.currentNode.Menu_ID,
-					Href: this.currentNode.Href,
-					Target: this.currentNode.Target,
-					Name: this.currentNode.Name,
-					SortNumber: this.currentNode.SortNumber,
-					Icon: this.currentNode.Icon,
-					Menu_PID: this.currentNode.Menu_PID,
-					IsShow: this.isShow ? 'Y' : 'N',
-					sys_roles: this.selectedRoles
-				}
+				let params = this.currentNode
 				this.$store.dispatch('editMenu', params)
 				this.$store.dispatch('getMenu')
 				this.addRoot()
@@ -221,13 +189,13 @@ export default {
 			this.selectedIcon = icon
 		},
 		submitSelect() {
-			this.iconTxt = this.currentNode.Icon = this.selectedIcon
+			this.iconTxt = this.currentNode.icon = this.selectedIcon
 			this.selectIcondialog = false
 		},
 		// 获取菜单详情
-		getMenu(Menu_ID) {
+		getMenu(menu_id) {
 			let params = {
-				Menu_ID
+				menu_id
 			}
 			request({
 				url: '/sys_menu/info',
@@ -235,8 +203,6 @@ export default {
 				params
 			}).then(res => {
 				this.currentNode = res.data.data
-				this.isShow = res.data.data.IsShow == 'Y' ? true : false
-				this.selectedRoles = res.data.data.sys_roles.map(item => item.Role_ID)
 			}).catch(err => {})
 		},
 		// 获取角色

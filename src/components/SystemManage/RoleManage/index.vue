@@ -34,12 +34,11 @@
 				</el-table-column>
 				<el-table-column prop="update_user.name" label="更新人" align="center">
 				</el-table-column>
-				<el-table-column width="250" align="center" fixed="right">
+				<el-table-column width="200" align="center" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="primary" size="mini" @click="edit(scope.row.role_id)">编辑</el-button>
 						<el-button type="danger" size="mini" @click="deleteConfirm(scope.row.role_id)">删除</el-button>
 						<el-button type="warning" size="mini" click="setAuth(scope.row.role_id)">设置权限</el-button>
-						<el-button type="success" size="mini" click="setUser(scope.row.role_id)">分配用户</el-button>
 					</template>
 				</el-table-column>
 			</el-table>

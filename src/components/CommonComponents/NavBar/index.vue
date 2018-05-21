@@ -6,7 +6,9 @@
 			<el-tooltip effect="dark" content="navbar.theme" placement="bottom"></el-tooltip>
 			<el-dropdown class="avatar-container right-menu-item">
 				<div class="avatar-wrapper">
-					<img class="user-avatar" :src="avatar ? imgUrl + avatar : require('../../../assets/imgs/avatar.gif')">
+					<img class="user-avatar" :src="avatar 
+						? imgUrlMini + avatar.split('uploads')[1] 
+						: require('../../../assets/imgs/avatar.gif')">
 					<span class="user-text">你好！{{name}}</span>
 					<i class="el-icon-caret-bottom"></i>
 				</div>
