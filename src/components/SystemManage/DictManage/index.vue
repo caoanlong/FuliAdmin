@@ -31,8 +31,21 @@
 				<el-table-column label="键" prop="key"></el-table-column>
 				<el-table-column label="值" prop="value"></el-table-column>
 				<el-table-column label="类型" prop="type"></el-table-column>
+				<el-table-column label="魅力值" prop="glamour"></el-table-column>
 				<el-table-column label="描述" prop="description"></el-table-column>
 				<el-table-column label="排序" prop="sort" align="center" width="60"></el-table-column>
+				<el-table-column prop="create_user.name" label="创建人" align="center"></el-table-column>
+				<el-table-column prop="update_user.name" label="更新人" align="center"></el-table-column>
+				<el-table-column prop="create_time" label="创建时间" align="center"  width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="update_time" label="更新时间" align="center" width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
 				<el-table-column width="110" align="center" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="primary" size="mini" @click="edit(scope.row.dict_id)">编辑</el-button>

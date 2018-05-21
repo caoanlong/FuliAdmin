@@ -16,6 +16,9 @@
 						<el-form-item label="类型" prop="type">
 							<el-input v-model="dict.type"></el-input>
 						</el-form-item>
+						<el-form-item label="魅力值" prop="glamour">
+							<el-input-number v-model="dict.glamour" :min="0"></el-input-number>
+						</el-form-item>
 						<el-form-item label="描述" prop="description">
 							<el-input v-model="dict.description"></el-input>
 						</el-form-item>
@@ -23,7 +26,7 @@
 							<el-input-number v-model="dict.sort" :min="1"></el-input-number>
 						</el-form-item>
 						<el-form-item>
-							<el-button type="primary" @click="addDict">立即保存</el-button>
+							<el-button type="primary" @click="save">立即保存</el-button>
 							<el-button @click="back">取消</el-button>
 						</el-form-item>
 					</el-form>
@@ -39,11 +42,12 @@
 		data() {
 			return {
 				dict: {
-					type:'',
-					value:'',
-					key:'',
-					description:'',
-					sort:''
+					type: '',
+					value: '',
+					key: '',
+					glamour: '',
+					description: '',
+					sort: ''
 				},
 				rules: {
 					key: [
@@ -65,11 +69,12 @@
 			}
 		},
 		methods: {
-			addDict() {
+			save() {
 				let data= {
 					type: this.dict.type,
 					value: this.dict.value,
 					key: this.dict.key,
+					glamour: this.dict.glamour,
 					description: this.dict.description,
 					sort: this.dict.sort
 				}

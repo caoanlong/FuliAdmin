@@ -7,37 +7,38 @@
 		<el-row>
 			<el-col :span="14" :offset="5">
 				<el-form label-width="120px">
-					<el-form-item label="图片分类">
-						<el-select style="width: 100%" placeholder="请选择" value="">
-							<el-option label="丝袜" value="丝袜"></el-option>
-							<el-option label="模特" value="模特"></el-option>
+					<el-form-item label="级别">
+						<el-select style="width: 100%" placeholder="请选择" v-model="image.level_id">
+							<el-option v-for="level in levels" :key="level.dict_id" :label="level.value" :value="level.dict_id"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="图片分级">
-						<el-select style="width: 100%" placeholder="请选择" value="">
-							<el-option label="1" value="1"></el-option>
-							<el-option label="2" value="2"></el-option>
-							<el-option label="3" value="3"></el-option>
-						</el-select>
+					<el-form-item label="名称">
+						<el-input v-model="image.name"></el-input>
 					</el-form-item>
-					<el-form-item label="图片名称">
-						<el-input auto-complete="off"></el-input>
+					<el-form-item label="描述">
+						<el-input type="textarea" v-model="image.description"></el-input>
 					</el-form-item>
-					<el-form-item label="图片封面">
-						<el-input auto-complete="off"></el-input>
+					<el-form-item label="是否显示">
+						<el-switch v-model="image.is_show"></el-switch>
+					</el-form-item>
+					<el-form-item label="封面">
+						<ImageUpload 
+							:files="[image.thumbnail]" 
+							@imgUrlBack="handleThumbnailSuccess" 
+							:isUseCropper="false">
+						</ImageUpload>
 					</el-form-item>
 					<el-form-item label="图片列表">
-						<el-input auto-complete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="状态">
-						<el-radio-group v-model="form.resource">
-							<el-radio label="下线"></el-radio>
-							<el-radio label="上线"></el-radio>
-						</el-radio-group>
+						<ImageUpload 
+							:files="image.content" 
+							@imgUrlBack="handleContentSuccess" 
+							:isUseCropper="false" 
+							:limitNum="12">
+						</ImageUpload>
 					</el-form-item>
 					<el-form-item>
-						<el-button type="primary" @click.native="addUser">立即创建</el-button>
-						<el-button @click.native="back">取消</el-button>
+						<el-button type="primary" @click="save">立即创建</el-button>
+						<el-button @click="back">取消</el-button>
 					</el-form-item>
 				</el-form>
 			</el-col>
@@ -46,19 +47,72 @@
 	</div>
 </template>
 <script type="text/javascript">
+import request from '../../common/request'
+import { Message } from 'element-ui'
+import ImageUpload from '../CommonComponents/ImageUpload'
 export default {
 	name: 'addimage',
 	data() {
-      return {
-        form: {
-          resource: ''
-        }
-      }
-    }
+		return {
+			levels: [],
+			image: {
+				name: '',
+				thumbnail: '',
+				description: '',
+				level_id: '',
+				content: [],
+				is_show: true,
+			}
+		}
+	},
+	created() {
+		this.getLevels()
+	},
+	methods: {
+		getLevels() {
+			let params = {
+				type: 'imageLevel'
+			}
+			request({
+				url: '/sys_dict/list/type',
+				params
+			}).then(res => {
+				this.levels = res.data.data
+			}).catch(err => {})
+		},
+		save() {
+			let data = {
+				name: this.image.name,
+				thumbnail: this.image.thumbnail,
+				description: this.image.description,
+				level_id: this.image.level_id,
+				content: this.image.content.join(','),
+				is_show: this.image.is_show
+			}
+			request({
+				url: '/image/add',
+				method: 'post',
+				data
+			}).then(res => {
+				Message.success(res.data.msg)
+				this.$router.push({name: 'imagemanage'})
+			}).catch(err => {})
+		},
+		handleThumbnailSuccess(res) {
+			this.image.thumbnail = res[0]
+		},
+		handleContentSuccess(res) {
+			this.image.content = res
+		},
+		back() {
+			this.$router.go(-1)
+		}
+	},
+	components: {
+		ImageUpload
+	}
 }
-
 </script>
 <style lang="stylus">
-
 
 </style>

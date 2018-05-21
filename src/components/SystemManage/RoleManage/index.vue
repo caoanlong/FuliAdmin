@@ -18,21 +18,18 @@
 		<div class="F-table">
 			<el-table :data="roles"  @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
 				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
-				<el-table-column prop="name" label="角色名称">
-				</el-table-column>
+				<el-table-column prop="name" label="角色名称"></el-table-column>
+				<el-table-column prop="create_user.name" label="创建人" align="center"></el-table-column>
+				<el-table-column prop="update_user.name" label="更新人" align="center"></el-table-column>
 				<el-table-column label="创建时间" align="center" width="140">
 					<template slot-scope="scope">
 						<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
 					</template>
 				</el-table-column>
-				<el-table-column prop="create_user.name" label="创建人" align="center">
-				</el-table-column>
 				<el-table-column label="更新时间" align="center" width="140">
 					<template slot-scope="scope">
 						<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
 					</template>
-				</el-table-column>
-				<el-table-column prop="update_user.name" label="更新人" align="center">
 				</el-table-column>
 				<el-table-column width="200" align="center" fixed="right">
 					<template slot-scope="scope">
@@ -122,7 +119,7 @@ export default {
 		deleteConfirm(id) {
 			let ids = ''
 			if (id && typeof id == 'string') {
-				ids = id
+				ids = [id]
 			} else {
 				if (this.selectedList.length == 0) {
 					this.$message({

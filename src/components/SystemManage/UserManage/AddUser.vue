@@ -39,7 +39,7 @@
 					</el-col>
 					<el-col :span="10" :offset="6">
 						<el-form-item>
-							<el-button type="primary" @click="addUser">立即添加</el-button>
+							<el-button type="primary" @click="save">立即添加</el-button>
 							<el-button @click="back">取消</el-button>
 						</el-form-item>
 					</el-col>
@@ -71,7 +71,7 @@ export default {
 		this.getRoleList()
 	},
 	methods: {
-		addUser() {
+		save() {
 			let data = this.user
 			console.log(data)
 			request({

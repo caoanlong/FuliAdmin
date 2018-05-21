@@ -4,12 +4,19 @@
 			<div slot="header">图片列表</div>
 			<div class="search">
 				<el-form :inline="true" class="demo-form-inline" size="small">
-					<el-form-item label="图片分类">
-						<el-select placeholder="请选择" v-model="findImgSort">
+					<el-form-item label="名称">
+						<el-input placeholder="请选择" v-model="findName"></el-input>
+					</el-form-item>
+					<el-form-item label="级别">
+						<el-select placeholder="请选择" v-model="findLevel">
+							<el-option v-for="level in levels" :key="level.dict_id" :label="level.value" :value="level.dict_id"></el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="图片分级">
-						<el-select placeholder="请选择" v-model="findImgLev">
+					<el-form-item label="是否可见">
+						<el-select placeholder="请选择" v-model="findIsShow">
+							<el-option label="全部" value=""></el-option>
+							<el-option label="显示" :value="true"></el-option>
+							<el-option label="隐藏" :value="false"></el-option>
 						</el-select>
 					</el-form-item>
 					<el-form-item>
@@ -19,48 +26,48 @@
 				</el-form>
 			</div>
 			<div class="tableControl">
-				<el-button type="default" size="mini" icon="el-icon-plus" @click.native="addImage">添加</el-button>
-				<el-button type="default" size="mini" icon="el-icon-delete" @click.native="deleteConfirm">批量删除</el-button>
+				<el-button type="default" size="mini" icon="el-icon-plus" @click="add">添加</el-button>
+				<el-button type="default" size="mini" icon="el-icon-delete" @click="deleteConfirm">批量删除</el-button>
 			</div>
 			<div class="F-table">
 				<el-table :data="imgList" @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
-					<el-table-column type="selection" width="40" align="center">
+					<el-table-column type="selection" width="40" align="center" fixed></el-table-column>
+					<el-table-column prop="name" label="名称" width="120"></el-table-column>
+					<el-table-column prop="thumbnail" label="封面">
+						<template slot-scope="scope">
+							<img height="20" :src="imgUrlMini + scope.row.thumbnail.split('/image/uploads')[1]">
+						</template>
 					</el-table-column>
-					<el-table-column prop="ImgSort" label="图片分类" align="center">
+					<el-table-column label="级别（魅力）" width="120">
+						<template slot-scope="scope">
+							<span>{{ scope.row.level.value + '（' + scope.row.level.glamour + '）' }}</span>
+						</template>
 					</el-table-column>
-					<el-table-column prop="ImgLV" label="图片分级">
+					<el-table-column prop="view" label="访问"></el-table-column>
+					<el-table-column prop="like" label="喜欢"></el-table-column>
+					<el-table-column prop="is_show" label="是否可见" align="center">
+						<template slot-scope="scope">
+							<span>{{ scope.row.is_show ? '是' : '否'}}</span>
+						</template>
 					</el-table-column>
-					<el-table-column prop="ImgTit" label="图片名称">
-					</el-table-column>
-					<el-table-column prop="ImgFace" label="图片封面">
-					</el-table-column>
-					<el-table-column prop="ImgList" label="图片列表">
-					</el-table-column>
-					<el-table-column prop="Visted" label="访问">
-					</el-table-column>
-					<el-table-column prop="Like" label="喜欢">
-					</el-table-column>
-					<el-table-column prop="Status" label="状态" align="center">
-					</el-table-column>
-					<el-table-column prop="UploadDate" label="上传时间" align="center" width="140">
+					<el-table-column prop="create_user.name" label="创建人" align="center"></el-table-column>
+					<el-table-column prop="update_user.name" label="更新人" align="center"></el-table-column>
+					<el-table-column label="创建时间" align="center" width="140">
 						<template slot-scope="scope">
 							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="UploadOperator" label="上传操作" align="center">
-					</el-table-column>
-					<el-table-column prop="UnShelveDate" label="下架时间" align="center" width="140">
+					<el-table-column label="更新时间" align="center" width="140">
 						<template slot-scope="scope">
-							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
+							<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="UnShelveOperator" label="下架操作" align="center">
-					</el-table-column>
-					<el-table-column prop="handle" label="操作" align="center" width="210">
+					<el-table-column prop="handle" label="操作" align="center" width="160" fixed="right">
 						<template slot-scope="scope">
-							<el-button size="mini" @click="view(scope.row._id)">查看</el-button>
-							<el-button size="mini" @click="edit(scope.row._id)">编辑</el-button>
-							<el-button size="mini" @click="deleteConfirm(scope.row._id)">删除</el-button>
+							<el-button size="mini" @click="setVisible(scope.row.image_id, false)" v-if="scope.row.is_show">隐藏</el-button>
+							<el-button size="mini" @click="setVisible(scope.row.image_id, true)" v-else>显示</el-button>
+							<el-button size="mini" @click="edit(scope.row.image_id)">编辑</el-button>
+							<el-button size="mini" @click="deleteConfirm(scope.row.image_id)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -97,14 +104,17 @@ export default {
 			pageIndex: 1,
 			pageSize: 10,
 			count: 0,
-			findImgSort: '',
-			findImgLev: '',
+			findName: '',
+			findLevel: '',
+			findIsShow: '',
 			selectedList: [],
-			imgList: []
+			imgList: [],
+			levels: []
 		}
 	},
 	created() {
 		this.getList()
+		this.getLevels()
 	},
 	methods: {
 		pageChange(index) {
@@ -112,24 +122,38 @@ export default {
 			this.getList()
 		},
 		reset() {
-			this.findMobile = '',
-				this.findName = '',
-				this.findStatus = '',
-				this.getList()
+			this.findName = ''
+			this.findLevel = ''
+			this.findIsShow = ''
+			this.getList()
 		},
 		add() {
-			this.$router.push({ name: 'addimg' })
+			this.$router.push({ name: 'addimage' })
 		},
-		edit(user_id) {
-			this.$router.push({ name: 'editimg', query: { user_id } })
+		edit(image_id) {
+			this.$router.push({ name: 'editimage', query: { image_id } })
+		},
+		getLevels() {
+			let params = {
+				type: 'imageLevel'
+			}
+			request({
+				url: '/sys_dict/list/type',
+				params
+			}).then(res => {
+				this.levels = res.data.data
+			}).catch(err => {})
 		},
 		getList() {
 			let params = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
+				name: this.findName,
+				level_id: this.findLevel,
+				is_show: this.findIsShow
 			}
 			request({
-				url: '/sys_user/list',
+				url: '/image/list',
 				method: 'get',
 				params
 			}).then(res => {
@@ -138,13 +162,26 @@ export default {
 			}).catch(err => {})
 		},
 		selectionChange(data) {
-			this.selectedList = data.map(item => item.user_id)
-			console.log(this.selectedList)
+			this.selectedList = data.map(item => item.image_id)
+		},
+		setVisible(image_id, bool) {
+			let data = {
+				image_id,
+				is_show: bool
+			}
+			request({
+				url: '/image/hide',
+				method: 'post',
+				data
+			}).then(res => {
+				Message.success(res.data.msg)
+				this.getList()
+			})
 		},
 		deleteConfirm(id) {
 			let ids = ''
 			if (id && typeof id == 'string') {
-				ids = id
+				ids = [id]
 			} else {
 				if (this.selectedList.length == 0) {
 					this.$message({
@@ -153,9 +190,8 @@ export default {
 					})
 					return
 				}
-				ids = this.selectedList.join(',')
+				ids = this.selectedList
 			}
-			console.log(ids)
 			this.$confirm('此操作将永久删除, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
@@ -178,7 +214,7 @@ export default {
 				ids: ids
 			}
 			request({
-				url: '/sys_user/delete',
+				url: '/image/delete',
 				method: 'post',
 				data
 			}).then(res => {

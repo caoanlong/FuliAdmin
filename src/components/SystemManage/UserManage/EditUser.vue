@@ -39,7 +39,7 @@
 					</el-col>
 					<el-col :span="10" :offset="6">
 						<el-form-item>
-							<el-button type="primary" @click="editUser">保存</el-button>
+							<el-button type="primary" @click="save">保存</el-button>
 							<el-button @click="back">取消</el-button>
 						</el-form-item>
 					</el-col>
@@ -103,7 +103,7 @@ export default {
 		handleAvatarSuccess(res) {
 			this.user.avatar = res[0]
 		},
-		editUser() {
+		save() {
 			let data = this.user
 			request({
 				url: '/sys_user/update',
