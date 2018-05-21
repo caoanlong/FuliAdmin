@@ -11,7 +11,7 @@ const menu = {
 				sessionStorage.setItem('menus', JSON.stringify(res.data.data))
 			})
 		},
-		ADD_MENU: (state, menu, callback) => {
+		ADD_MENU: (state, menu) => {
 			addMenu(menu).then(res => {
 				getMenus().then(res => {
 					state.menus = res.data.data
@@ -19,7 +19,7 @@ const menu = {
 				})
 			})
 		},
-		EDIT_MENU: (state, menu, callback) => {
+		EDIT_MENU: (state, menu) => {
 			updateMenu(menu).then(res => {
 				getMenus().then(res => {
 					state.menus = res.data.data
@@ -27,8 +27,8 @@ const menu = {
 				})
 			})
 		},
-		DELETE_MENU: (state, menu, callback) => {
-			delMenu({Menu_ID: menu.Menu_ID}).then(res => {
+		DELETE_MENU: (state, menu) => {
+			delMenu({ids: [menu.menu_id]}).then(res => {
 				getMenus().then(res => {
 					state.menus = res.data.data
 					sessionStorage.setItem('menus', JSON.stringify(res.data.data))

@@ -47,14 +47,6 @@ const router = new Router({
 					component: () => import ('../components/ImageManage/AddImage')
 				},
 				{
-					path: '/viewimage',
-					name: 'viewimage',
-					meta: {
-						title: '查看图片'
-					},
-					component: () => import ('../components/ImageManage/ViewImage')
-				},
-				{
 					path: '/editimage',
 					name: 'editimage',
 					meta: {
@@ -134,6 +126,22 @@ const router = new Router({
 								title: '字典管理'
 							},
 							component: () => import ('../components/SystemManage/DictManage')
+						},
+						{
+							path: '/adddict',
+							name: 'adddict',
+							meta: {
+								title: '添加字典'
+							},
+							component: () => import ('../components/SystemManage/DictManage/AddDict')
+						},
+						{
+							path: '/editdict',
+							name: 'editdict',
+							meta: {
+								title: '编辑字典'
+							},
+							component: () => import ('../components/SystemManage/DictManage/EditDict')
 						},
 						{
 							path: '/menumanage',

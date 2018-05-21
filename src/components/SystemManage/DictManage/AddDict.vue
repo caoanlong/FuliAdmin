@@ -7,24 +7,23 @@
 			<el-row>
 				<el-col :span="14" :offset="5">
 					<el-form label-width="120px" :model="dict" :rules="rules" ref="ruleForm">
-						<el-form-item label="键值" prop="VALUE">
-							<el-input auto-complete="off" v-model="dict.VALUE"></el-input>
+						<el-form-item label="键" prop="key">
+							<el-input v-model="dict.key"></el-input>
 						</el-form-item>
-						<el-form-item label="标签" prop="NAME">
-							<el-input auto-complete="off" v-model="dict.NAME"></el-input>
+						<el-form-item label="值" prop="value">
+							<el-input v-model="dict.value"></el-input>
 						</el-form-item>
-						<el-form-item label="类型" prop="TYPE">
-							<el-input auto-complete="off" v-model="dict.TYPE"></el-input>
+						<el-form-item label="类型" prop="type">
+							<el-input v-model="dict.type"></el-input>
 						</el-form-item>
-						<el-form-item label="描述" prop="Description">
-							<el-input auto-complete="off" v-model="dict.Description"></el-input>
+						<el-form-item label="描述" prop="description">
+							<el-input v-model="dict.description"></el-input>
 						</el-form-item>
 						<el-form-item label="排序">
-							<el-input-number v-model="dict.SortNumber" :min="1"></el-input-number>
+							<el-input-number v-model="dict.sort" :min="1"></el-input-number>
 						</el-form-item>
-
 						<el-form-item>
-							<el-button type="primary" @click.native="addDict">立即保存</el-button>
+							<el-button type="primary" @click="addDict">立即保存</el-button>
 							<el-button @click="back">取消</el-button>
 						</el-form-item>
 					</el-form>
@@ -34,45 +33,45 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import request from '../../../../common/request'
+	import request from '../../../common/request'
 	import { Message } from 'element-ui'
 	export default {
 		data() {
 			return {
 				dict: {
-					TYPE:'',
-					NAME:'',
-					VALUE:'',
-					Description:'',
-					SortNumber:''
+					type:'',
+					value:'',
+					key:'',
+					description:'',
+					sort:''
 				},
 				rules: {
-					VALUE: [
+					key: [
 						{required: true, message: '请输入键值'},
-						{min: 1, max: 10, message: '长度在 1 到 10 个字符'}
+						{min: 2, max: 50, message: '长度在 1 到 50 个字符'}
 					],
-					NAME: [
+					value: [
 						{required: true, message: '请输入标签'},
 						{min: 2, max: 50, message: '长度在 2 到 50 个字符'}
 					],
-					TYPE: [
+					type: [
 						{required: true, message: '请输入类型'},
 						{min: 2, max: 100, message: '长度在 2 到 100 个字符'}
 					],
-					Description: [
+					description: [
 						{min: 2, max: 200, message: '长度在 2 到 200 个字符'}
-					],
+					]
 				}
 			}
 		},
 		methods: {
 			addDict() {
 				let data= {
-					TYPE: this.dict.TYPE,
-					NAME: this.dict.NAME,
-					VALUE: this.dict.VALUE,
-					Description: this.dict.Description,
-					SortNumber: this.dict.SortNumber
+					type: this.dict.type,
+					value: this.dict.value,
+					key: this.dict.key,
+					description: this.dict.description,
+					sort: this.dict.sort
 				}
 				this.$refs['ruleForm'].validate(valid => {
 					if (valid) {
