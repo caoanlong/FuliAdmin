@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const router = new Router({
+	mode: 'history',
 	scrollBehavior: () => ({ y: 0 }),
 	routes: [{
 			path: '*',

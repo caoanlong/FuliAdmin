@@ -1,7 +1,7 @@
 <template>
 	<div class="tags-view-container">
 		<scroll-pane class='tags-view-wrapper' ref='scrollPane'>
-			<router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
+			<router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="{name: tag.name, query: tag.query}" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
 				{{tag.title}}
 				<span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
 			</router-link>
@@ -82,7 +82,7 @@ export default {
 					const latestView = views.slice(-1)[0]
 					console.log(latestView)
 					if (latestView) {
-						this.$router.push({name: latestView.name})
+						this.$router.push({name: latestView.name, query: latestView.query})
 					} else {
 						this.$router.push('/')
 					}
