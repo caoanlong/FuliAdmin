@@ -30,7 +30,7 @@ service.interceptors.response.use(
 				|| response.data.code == 104 ) {
 				localStorage.clear()
 				Message.error(response.data.msg)
-				window.location.href = '/#/login'
+				window.location.href = '/login'
 				return Promise.reject('error')
 			}
 			Message.error(response.data.msg)
