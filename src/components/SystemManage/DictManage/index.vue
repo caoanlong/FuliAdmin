@@ -3,13 +3,17 @@
 		<div class="search">
 			<el-form :inline="true" class="demo-form-inline" size="small">
 				<el-form-item label="类型">
-					<el-select placeholder="请选择" value="">
-						<el-option label="启用" value="启用"></el-option>
-						<el-option label="禁用" value="禁用"></el-option>
+					<el-select placeholder="请选择" v-model="findDictType">
+						<el-option 
+							v-for="dictType in dictTypes" 
+							:key="dictType.type" 
+							:label="dictType.description +'('+ dictType.type + ')'" 
+							:value="dictType.type">
+						</el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="描述">
-					<el-input placeholder="描述"></el-input>
+					<el-input placeholder="描述" v-model="findDescription"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="getList()">查询</el-button>
@@ -23,12 +27,25 @@
 		</div>
 		<div class="F-table">
 			<el-table :data="dicts" @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
-				<el-table-column label="Id" type="selection" align="center" width="40"></el-table-column>
-				<el-table-column label="键值" prop="demo"></el-table-column>
-				<el-table-column label="标签" prop="demo"></el-table-column>
-				<el-table-column label="类型" prop="demo"></el-table-column>
-				<el-table-column label="描述" prop="demo"></el-table-column>
+				<el-table-column label="dict_id" type="selection" align="center" width="40"></el-table-column>
+				<el-table-column label="键" prop="key"></el-table-column>
+				<el-table-column label="值" prop="value"></el-table-column>
+				<el-table-column label="类型" prop="type"></el-table-column>
+				<el-table-column label="魅力值" prop="glamour"></el-table-column>
+				<el-table-column label="描述" prop="description"></el-table-column>
 				<el-table-column label="排序" prop="sort" align="center" width="60"></el-table-column>
+				<el-table-column prop="create_user.name" label="创建人" align="center"></el-table-column>
+				<el-table-column prop="update_user.name" label="更新人" align="center"></el-table-column>
+				<el-table-column prop="create_time" label="创建时间" align="center"  width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
+				<el-table-column prop="update_time" label="更新时间" align="center" width="140">
+					<template slot-scope="scope">
+						<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
+					</template>
+				</el-table-column>
 				<el-table-column width="110" align="center" fixed="right">
 					<template slot-scope="scope">
 						<el-button type="primary" size="mini" @click="edit(scope.row.dict_id)">编辑</el-button>
@@ -67,21 +84,33 @@ export default {
 			count: 0,
 			pageIndex: 1,
 			pageSize: 10,
+			findDictType: '',
+			findDescription: '',
 			dicts: [],
+			dictTypes: [],
 			selectedList: []
 		}
 	},
 	created() {
 		this.getList()
+		this.getTypeList()
 	},
 	methods: {
 		pageChange(index) {
 			this.pageIndex = index
+			this.getList()
+		},
+		reset() {
+			this.findDictType = ''
+			this.findDescription = ''
+			this.getList()
 		},
 		getList() {
 			let params = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
+				type: this.findDictType,
+				description: this.findDescription,
 			}
 			request({
 				url: '/sys_dict/list',
@@ -89,24 +118,29 @@ export default {
 				params
 			}).then(res => {
 				this.count = res.data.data.count
-				this.users = res.data.data.rows
+				this.dicts = res.data.data.rows
 			}).catch(err => {})
 		},
-		add() {},
-		reset() {},
-		handleCommand(e) {
-			if (e.type == 'view') {
-				this.$router.push({ name: 'viewdict', query: { dictID: e.id } })
-			} else if (e.type == 'edit') {
-				this.$router.push({ name: 'editdict', query: { dictID: e.id } })
-			} else if (e.type == 'delete') {
-				this.deleteConfirm(e.id)
-			}
+		getTypeList() {
+			request({
+				url: '/sys_dict/type'
+			}).then(res => {
+				this.dictTypes = res.data.data
+			}).catch(err => {})
+		},
+		selectionChange(data) {
+			this.selectedList = data.map(item => item.dict_id)
+		},
+		add() {
+			this.$router.push({ name: 'adddict' })
+		},
+		edit(dict_id) {
+			this.$router.push({ name: 'editdict', query: { dict_id } })
 		},
 		deleteConfirm(id) {
 			let ids = []
 			if (id && typeof id == 'string') {
-				ids = [].concat(id)
+				ids = [id]
 			} else {
 				if (this.selectedDicts.length == 0) {
 					this.$message({
@@ -134,10 +168,6 @@ export default {
 				})
 			})
 		},
-		selectionChange(data) {
-			this.selectedList = data.map(item => item.dict_id)
-			console.log(this.selectedList)
-		},
 		delDict(ids) {
 			let data = {
 				ids: ids
@@ -147,7 +177,7 @@ export default {
 				method: 'post',
 				data
 			}).then(res => {
-				this.getDict()
+				this.getList()
 			}).catch(err => {})
 		},
 

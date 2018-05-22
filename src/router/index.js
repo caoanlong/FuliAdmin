@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const router = new Router({
+	mode: 'history',
 	scrollBehavior: () => ({ y: 0 }),
 	routes: [{
 			path: '*',
@@ -45,14 +46,6 @@ const router = new Router({
 						title: '添加图片'
 					},
 					component: () => import ('../components/ImageManage/AddImage')
-				},
-				{
-					path: '/viewimage',
-					name: 'viewimage',
-					meta: {
-						title: '查看图片'
-					},
-					component: () => import ('../components/ImageManage/ViewImage')
 				},
 				{
 					path: '/editimage',
@@ -134,6 +127,22 @@ const router = new Router({
 								title: '字典管理'
 							},
 							component: () => import ('../components/SystemManage/DictManage')
+						},
+						{
+							path: '/adddict',
+							name: 'adddict',
+							meta: {
+								title: '添加字典'
+							},
+							component: () => import ('../components/SystemManage/DictManage/AddDict')
+						},
+						{
+							path: '/editdict',
+							name: 'editdict',
+							meta: {
+								title: '编辑字典'
+							},
+							component: () => import ('../components/SystemManage/DictManage/EditDict')
 						},
 						{
 							path: '/menumanage',

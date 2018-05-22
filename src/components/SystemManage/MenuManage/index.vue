@@ -155,7 +155,6 @@ export default {
 				type: 'warning'
 			}).then(() => {
 				this.$store.dispatch('deleteMenu', d)
-				this.$store.dispatch('getMenu')
 				this.addRoot()
 				this.$message({
 					type: 'success',
@@ -173,14 +172,12 @@ export default {
 			if (type == '立即创建') {
 				let params = this.currentNode
 				this.$store.dispatch('addMenu', params)
-				this.$store.dispatch('getMenu')
 				this.addRoot()
 				this.$message.success('创建成功！')
 				// 编辑
 			} else {
 				let params = this.currentNode
 				this.$store.dispatch('editMenu', params)
-				this.$store.dispatch('getMenu')
 				this.addRoot()
 				this.$message.success('编辑成功！')
 			}
