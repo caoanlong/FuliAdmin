@@ -61,6 +61,7 @@
 						this.loading = true
 						this.$store.dispatch('login', this.loginForm).then(() => {
 							this.$store.dispatch('getUserInfo')
+							this.$store.dispatch('getMenu')
 							this.loading = false
 							Message.success('登录成功')
 							this.$router.push({ path: '/' })
