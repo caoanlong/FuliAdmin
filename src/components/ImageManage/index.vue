@@ -32,8 +32,8 @@
 			<div class="F-table">
 				<el-table :data="imgList" @selection-change="selectionChange" border style="width: 100%" size="small" stripe>
 					<el-table-column type="selection" width="40" align="center" fixed></el-table-column>
-					<el-table-column prop="name" label="名称" width="120"></el-table-column>
-					<el-table-column prop="thumbnail" label="封面">
+					<el-table-column prop="name" label="名称"></el-table-column>
+					<el-table-column prop="thumbnail" label="封面" width="60">
 						<template slot-scope="scope">
 							<img height="20" :src="imgUrlMini + scope.row.thumbnail.split('/image/uploads')[1]">
 						</template>
@@ -43,15 +43,15 @@
 							<span>{{ scope.row.level.value + '（' + scope.row.level.glamour + '）' }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="view" label="访问"></el-table-column>
-					<el-table-column prop="like" label="喜欢"></el-table-column>
-					<el-table-column prop="is_show" label="是否可见" align="center">
+					<el-table-column prop="view" label="访问" width="60"></el-table-column>
+					<el-table-column prop="like" label="喜欢" width="60"></el-table-column>
+					<el-table-column prop="is_show" label="是否可见" align="center" width="80">
 						<template slot-scope="scope">
 							<span>{{ scope.row.is_show ? '是' : '否'}}</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="create_user.name" label="创建人" align="center"></el-table-column>
-					<el-table-column prop="update_user.name" label="更新人" align="center"></el-table-column>
+					<el-table-column prop="create_user.name" label="创建人" align="center" width="100"></el-table-column>
+					<el-table-column prop="update_user.name" label="更新人" align="center" width="100"></el-table-column>
 					<el-table-column label="创建时间" align="center" width="140">
 						<template slot-scope="scope">
 							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
