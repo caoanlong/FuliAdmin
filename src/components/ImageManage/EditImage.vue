@@ -33,7 +33,7 @@
 							:files="image.content" 
 							@imgUrlBack="handleContentSuccess" 
 							:isUseCropper="false" 
-							:limitNum="12">
+							:limitNum="100">
 						</ImageUpload>
 					</el-form-item>
 					<el-form-item>
