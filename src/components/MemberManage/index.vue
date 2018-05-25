@@ -5,40 +5,32 @@
 			<div class="search">
 				<el-form :inline="true" class="demo-form-inline" size="small">
 					<el-form-item label="手机号码">
-						<el-input placeholder="手机号码" v-model="findMobile"></el-input>
+						<el-input placeholder="请输入..." v-model="findMobile"></el-input>
 					</el-form-item>
-					<el-form-item label="状态">
-						<el-select placeholder="请选择" v-model="findStatus">
-							<el-option label="正常" value="false"></el-option>
-							<el-option label="禁用" value="true"></el-option>
-						</el-select>
+					<el-form-item label="名字">
+						<el-input placeholder="请输入..." v-model="findName"></el-input>
 					</el-form-item>
 					<el-form-item>
-						<el-button type="primary" @click.native="getList">查询</el-button>
-						<el-button type="default" @click.native="reset">重置</el-button>
+						<el-button type="primary" @click="getList">查询</el-button>
+						<el-button type="default" @click="reset">重置</el-button>
 					</el-form-item>
 				</el-form>
-			</div>
-			<div class="tableControl">
-				<el-button type="default" size="mini" icon="el-icon-delete" @click.native="deleteConfirm">批量删除</el-button>
-				<el-button type="default" size="mini" icon="el-icon-download" @click.native="exportExcel">导出</el-button>
 			</div>
 			<div class="F-table">
 				<el-table :data="members" border style="width: 100%" size="small">
 					<el-table-column type="selection" width="40" align="center">
 					</el-table-column>
-					<el-table-column prop="mobile" label="手机号码" align="center" width="100">
-					</el-table-column>
-					<el-table-column prop="address" label="活跃度" align="center">
-					</el-table-column>
-					<el-table-column prop="create_time" label="创建时间" align="center" width="140">
+					<el-table-column prop="mobile" label="手机号码" align="center" width="100"></el-table-column>
+					<el-table-column prop="name" label="名字" align="center"></el-table-column>
+					<el-table-column prop="glamour" label="魅力值" align="center"></el-table-column>
+					<el-table-column label="创建时间" align="center" width="140">
 						<template slot-scope="scope">
 							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
 						</template>
 					</el-table-column>
-					<el-table-column prop="create_time" label="最后登录时间" align="center" width="140">
+					<el-table-column label="更新时间" align="center" width="140">
 						<template slot-scope="scope">
-							<span v-if="scope.row.create_time">{{ new Date(scope.row.create_time).getTime() | getdatefromtimestamp()}}</span>
+							<span v-if="scope.row.update_time">{{ new Date(scope.row.update_time).getTime() | getdatefromtimestamp()}}</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="is_disabled" label="状态" align="center" width="60">
@@ -47,11 +39,11 @@
 							<el-tag size="mini" type="success" v-else>正常</el-tag>
 						</template>
 					</el-table-column>
-					<el-table-column prop="address" label="操作" align="center" width="210">
+					<el-table-column label="操作" align="center" width="210">
 						<template slot-scope="scope">
-							<el-button size="mini" @click="edit(scope.row.mem_id)">编辑</el-button>
-							<el-button size="mini" @click="deleteConfirm(scope.row.mem_id)">删除</el-button>
-							<el-button size="mini">封停</el-button>
+							<el-button size="mini" @click="view(scope.row.member_id)">查看</el-button>
+							<el-button size="mini" @click="disable(scope.row.member_id, false)" v-if="scope.row.is_disabled">启用</el-button>
+							<el-button size="mini" @click="disable(scope.row.member_id, true)" v-else>禁用</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -90,8 +82,7 @@ export default {
 			pageSize: 10,
 			count: 0,
 			findMobile: '',
-			findStatus: '',
-			selectedList: [],
+			findName: ''
 		}
 	},
 	created() {
@@ -104,75 +95,41 @@ export default {
 		},
 		reset() {
 			this.findMobile = '',
-				this.findStatus = '',
-				this.getList()
-		},
-		edit(user_id) {
-			this.$router.push({ name: 'editmember', query: { mem_id } })
+			this.findName = '',
+			this.getList()
 		},
 		getList() {
 			let params = {
 				pageIndex: this.pageIndex,
 				pageSize: this.pageSize,
 				mobile: this.findMobile,
-				is_disabled: this.findStatus
+				name: this.findName
 			}
 			request({
-				url: '/sys_user/list',
+				url: '/member/list',
 				method: 'get',
 				params
 			}).then(res => {
 				this.count = res.data.data.count
 				this.members = res.data.data.rows
-			}).catch(err => {})
-		},
-		selectionChange(data) {
-			this.selectedList = data.map(item => item.user_id)
-			console.log(this.selectedList)
-		},
-		deleteConfirm(id) {
-			let ids = ''
-			if (id && typeof id == 'string') {
-				ids = id
-			} else {
-				if (this.selectedList.length == 0) {
-					this.$message({
-						type: 'warning',
-						message: '请选择'
-					})
-					return
-				}
-				ids = this.selectedList.join(',')
-			}
-			console.log(ids)
-			this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-			}).then(() => {
-				this.delItem(ids)
-				this.$message({
-					type: 'success',
-					message: '删除成功!'
-				})
-			}).catch(() => {
-				this.$message({
-					type: 'info',
-					message: '已取消删除'
-				})
 			})
 		},
-		delItem(ids) {
+		disable(member_id, is_disabled) {
 			let data = {
-				ids: ids
+				member_id,
+				is_disabled
 			}
 			request({
-				url: '/sys_user/delete',
+				url: '/member/disable',
 				method: 'post',
 				data
 			}).then(res => {
+				Message.success(res.data.msg)
 				this.getList()
-			}).catch(err => {})
+			})
+		},
+		view(member_id) {
+			this.$router.push({ name: 'viewmember', query: { member_id } })
 		}
 	}
 }

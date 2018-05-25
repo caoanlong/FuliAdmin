@@ -64,6 +64,14 @@ const router = new Router({
 					component: () => import ('../components/MemberManage')
 				},
 				{
+					path: '/viewmember',
+					name: 'viewmember',
+					meta: {
+						title: '查看会员'
+					},
+					component: () => import ('../components/MemberManage/ViewMember')
+				},
+				{
 					path: '/systemmanage',
 					name: 'systemmanage',
 					meta: {
