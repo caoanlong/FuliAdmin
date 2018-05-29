@@ -17,7 +17,8 @@
 			<div class="addIcon">
 				<i style="font-size: 30px; position: relative; top: 10px" class="el-icon-plus avatar-uploader-icon"></i>
 			</div>
-			<input type="file" name="" @change.stop="addImg" ref="uploadFile"/>
+			<input type="file" name="" @change.stop="addImg" ref="uploadFile"v-if="limitNum == 1"/>
+			<input type="file" name="" @change.stop="addImgMultiple" ref="uploadFile" multiple="multiple" v-else/>
 		</div>
 		<el-dialog title="裁剪图片" :visible.sync="isShowCropper">
 			<vueCropper
@@ -67,7 +68,7 @@
 			},
 			isUseCropper: {
 				type: Boolean,
-				default: true
+				default: false
 			},
 			fixed: {
 				type: Boolean,
@@ -119,6 +120,18 @@
 						this.uploadFile(this.$refs.uploadFile.files[0])
 					}
 					this.$refs.uploadFile.value = ''
+				}
+			},
+			addImgMultiple(e) {
+				let files = this.$refs.uploadFile.files
+				for (let i = 0; i < files.length; i++) {
+					let arr = files[i].name.split('.')
+					let suffix = arr[arr.length-1].toLowerCase()
+					if (suffix != 'jpg' && suffix != 'jpeg' && suffix != 'png' && suffix != 'gif') {
+						Message.error('图片格式只支持jpg、png和gif！')
+						return
+					}
+					this.uploadFile(files[i])
 				}
 			},
 			upload() {
