@@ -22,3 +22,4 @@
 #app .nest-menu .el-submenu > .el-submenu__title,#app .el-submenu .el-menu-item{min-width:180px!important;background-color:#1f2d3d!important;}
 #app .nest-menu .el-submenu > .el-submenu__title:hover,#app .el-submenu .el-menu-item:hover{background-color:#001528!important;}
 #app .el-menu--collapse .el-menu .el-submenu{min-width:180px!important;}
+#app .hideSidebar .el-menu-item,#app .hideSidebar .el-menu-item .el-tooltip{padding-left:10px!important;}

@@ -1,4 +1,4 @@
-import {getMenus, addMenu, updateMenu, delMenu} from '../../api/menu'
+import { getMenus, addMenu, updateMenu, delMenu } from '../../api/menu'
 
 const menu = {
 	state: {
